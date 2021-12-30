@@ -6,9 +6,11 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Main/index.html")
 
-@views.route('/profile')
+@views.route('customer/profile')
 def profile():
     return render_template("customer/profile.html")
+
+
 
 @views.route('admin/profile')
 def adminProfile():
