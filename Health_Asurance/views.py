@@ -19,3 +19,8 @@ def adminProfile():
 @views.route('admin/customer')
 def admincCustomer():
     return render_template("admin/customer.html")
+
+@views.route('admin/plans')
+def admincPlans():
+    return render_template("admin/plans.html")
+
