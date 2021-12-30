@@ -10,3 +10,6 @@ def home():
 def profile():
     return render_template("customer/profile.html")
 
+@views.route('admin/profile')
+def profile():
+    return render_template("admin/profile.html")
