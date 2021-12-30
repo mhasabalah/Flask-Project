@@ -148,30 +148,6 @@ a {
     height: 100vh
 }
 
-
-/* taple style */
-.search {
-    top: 6px;
-    left: 10px
-}
-
-.form-control {
-    border: none;
-    padding-left: 32px
-}
-
-.form-control:focus {
-    border: none;
-    box-shadow: none
-}
-
-.green {
-    color: green
-}
-
-/* done */
-
-
 @media screen and (min-width: 768px) {
     body {
         margin: calc(var(--header-height) + 1rem) 0 0 0;

@@ -13,3 +13,7 @@ def profile():
 @views.route('admin/profile')
 def adminProfile():
     return render_template("admin/profile.html")
+
+@views.route('admin/customer')
+def admincCustomer():
+    return render_template("admin/customer.html")
