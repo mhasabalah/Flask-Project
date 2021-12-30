@@ -10,6 +10,13 @@ def home():
 def profile():
     return render_template("customer/profile.html")
 
+@views.route('customer/hospitals')
+def hospitals():
+    return render_template("customer/profile.html")
+    
+
+
+
 
 
 @views.route('admin/profile')
