@@ -2,6 +2,8 @@ from flask import Blueprint, render_template
 
 views = Blueprint('views', __name__)
 
+
+##### Customer #####
 @views.route('/')
 def home():
     return render_template("Main/index.html")
@@ -16,8 +18,7 @@ def hospitals():
     
 
 
-
-
+##### Admin #####
 
 @views.route('admin/profile')
 def adminProfile():
@@ -30,4 +31,8 @@ def admincCustomer():
 @views.route('admin/plans')
 def admincPlans():
     return render_template("admin/plans.html")
+
+@views.route('admin/hospitals')
+def adminhospitals():
+    return render_template("admin/hospitals.html")
 
