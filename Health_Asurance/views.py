@@ -15,11 +15,18 @@ def profile():
 @views.route('customer/hospitals')
 def hospitals():
     return render_template("customer/hospitals.html")
-    
 
 @views.route('customer/plans')
 def plans():
     return render_template("customer/PurchasedPlans.html")
+    
+
+@views.route('customer/claims')
+def claims():
+    return render_template("customer/claims.html")
+    
+    
+    
     
 
 ##### Admin #####
