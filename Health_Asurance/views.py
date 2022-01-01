@@ -17,18 +17,12 @@ def hospitals():
     return render_template("customer/hospitals.html")
     
 
-<<<<<<< Updated upstream
-
-##### Admin #####
-=======
 @views.route('customer/plans')
 def plans():
     return render_template("customer/PurchasedPlans.html")
     
 
-
->>>>>>> Stashed changes
-
+##### Admin #####
 @views.route('admin/profile')
 def adminProfile():
     return render_template("admin/profile.html")
