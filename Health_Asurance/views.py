@@ -43,6 +43,10 @@ def admincPlans():
     return render_template("admin/plans.html")
 
 @views.route('admin/hospitals')
-def adminhospitals():
+def adminHospitals():
     return render_template("admin/hospitals.html")
+
+@views.route('admin/claims')
+def adminClaims():
+    return render_template("admin/claims.html")
 
