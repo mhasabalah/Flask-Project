@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from .views import views
-
+from flask_mysqldb import MySQL
 
 def create_app():
     # create and configure the app
@@ -12,6 +12,24 @@ def create_app():
         SECRET_KEY='dev'
        #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
+
+    app.config['MYSQL_HOST'] = 'localhost'
+    app.config['MYSQL_USER'] = 'root'
+    app.config['MYSQL_PASSWORD'] = ''
+    app.config['MYSQL_DB'] = 'health_insurance'
+
+    mysql = MySQL(app)
+
+    @app.route('/try')
+    def tryy():
+        cur = mysql.connection.cursor()
+        cur.execute('''SELECT * FROM plans''')
+        resurlt = cur.fetchall()
+        print (resurlt)
+        return 'done'
+    
+    
+
 
     app.register_blueprint(views, url_prefix='/')
     
