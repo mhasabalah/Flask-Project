@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_mysqldb import MySQL
-
+import mysql
 views = Blueprint('views', __name__)
 
 
@@ -26,6 +26,14 @@ def plans():
 def claims():
     return render_template("customer/claims.html")
     
+
+@views.route('/try')
+def tryy():
+    cur = mysql.connection.cursor()
+    cur.execute('''SELECT * FROM plans''')
+    resurlt = cur.fetchall()
+    print (resurlt)
+    return 'done'
 
     
 
