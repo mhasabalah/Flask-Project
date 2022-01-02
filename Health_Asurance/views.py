@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_mysqldb import MySQL
 
 views = Blueprint('views', __name__)
 
@@ -25,8 +26,7 @@ def plans():
 def claims():
     return render_template("customer/claims.html")
     
-    
-    
+
     
 
 ##### Admin #####
