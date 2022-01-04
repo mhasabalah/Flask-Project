@@ -64,12 +64,26 @@ def tryy():
 def adminProfile():
     return render_template("admin/profile.html")
 
-@views.route('admin/customer')
-def admincCustomer():
-    return render_template("admin/customer.html")
+@views.route('admin/customer', methods=['GET'])
+def AdminCustomer():
+    cursor = mysql.connection.cursor()
+    sql = "select * from health_insurance.customers;"
+    cursor.execute(sql)
+    customers = cursor.fetchall()
+    print (customers)
+    return render_template("admin/customer.html", customers = customers)
 
-@views.route('admin/plans')
-def admincPlans():
+@views.route('admin/plans',methods=['GET', 'POST'])
+def AdminPlans():
+    if request.method == 'POST':
+        planType = request.form["type"] 
+        price = request.form["price"]
+        cursor = mysql.connection.cursor()
+        sql=f"INSERT INTO health_insurance.plans (Type, Price) VALUES ('{planType}','{price}');"
+        cursor.execute(sql)
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
     return render_template("admin/plans.html")
 
 @views.route('admin/hospitals')
