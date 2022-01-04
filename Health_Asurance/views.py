@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
-from flask_mysqldb import MySQL
-import mysql
+from flask import Blueprint, render_template, request , flash
+from . import mysql
+
+
 views = Blueprint('views', __name__)
 
 
@@ -9,13 +10,34 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Main/index.html")
 
+@views.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        user = request.form
+        print(user)
+
+        return "done"
+    else:
+        return render_template("register.html")
+
+@views.route('/login')
+def login():
+    if request.method == "POST":
+    
+        return render_template("login.html")
+
 @views.route('customer/profile')
 def profile():
     return render_template("customer/profile.html")
 
-@views.route('customer/hospitals')
+@views.route('customer/hospitals', methods=['GET'])
 def hospitals():
-    return render_template("customer/hospitals.html")
+    cursor = mysql.connection.cursor()
+    sql = "select hospitals.Name,hospitals.City,hospitals.phone, plans.Type from enrolled , hospitals ,plans where plans.plan_Id = enrolled.plan_Id and enrolled.Hospital_id =hospitals.Hospital_id"
+    cursor.execute(sql)
+    hospitals = cursor.fetchall()
+    print (hospitals)
+    return render_template("customer/hospitals.html", hospitals = hospitals)
 
 @views.route('customer/plans')
 def plans():
@@ -27,7 +49,7 @@ def claims():
     return render_template("customer/claims.html")
     
 
-@views.route('/try')
+@views.route('/tryy')
 def tryy():
     cur = mysql.connection.cursor()
     cur.execute('''SELECT * FROM plans''')

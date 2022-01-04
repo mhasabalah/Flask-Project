@@ -1,7 +1,9 @@
 import os
 from flask import Flask
-from .views import views
 from flask_mysqldb import MySQL
+
+
+mysql = MySQL()
 
 def create_app():
     # create and configure the app
@@ -17,10 +19,14 @@ def create_app():
 
     app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = ''
+    app.config['MYSQL_PASSWORD'] = 'Phud8asp'
     app.config['MYSQL_DB'] = 'health_insurance'
 
     mysql = MySQL(app)
+
+    
+    
+    from .views import views
     app.register_blueprint(views, url_prefix='/')
     
     return app
