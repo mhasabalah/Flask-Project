@@ -1,10 +1,20 @@
 from os import name
+<<<<<<< HEAD
 from flask import Blueprint, render_template, request , flash,session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
+=======
+
+from flask import Blueprint, render_template, request , flash,session, g
+from flask.helpers import url_for
+from werkzeug.utils import redirect
+
+from . import mysql
+import functools
+>>>>>>> 8d069522b7b31662eab57a0b61b2bfcce14d715d
 
 views = Blueprint('views', __name__)
 
@@ -71,6 +81,7 @@ def profile():
         )
         g.user =cur.fetchone()
         user= g.user
+<<<<<<< HEAD
         print(user)
         age=date.today().year - user[2].year - ((date.today().month, date.today().day)<(user[2].month, user[2].day))
 
@@ -87,6 +98,10 @@ def profile():
         )  
         plans = cur.fetchall()         
     return render_template("customer/profile.html", users= user , age =age, dependents =dependents, plans = plans )
+=======
+        print(g.user)
+    return render_template("customer/profile.html", users= user)
+>>>>>>> 8d069522b7b31662eab57a0b61b2bfcce14d715d
 
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
@@ -111,16 +126,43 @@ def claims():
 def adminProfile():
     return render_template("admin/profile.html")
 
-@views.route('admin/customer')
-def admincCustomer():
-    return render_template("admin/customer.html")
+@views.route('admin/customer', methods=['GET'])
+def AdminCustomer():
+    cursor = mysql.connection.cursor()
+    sql = "select * from health_insurance.customers;"
+    cursor.execute(sql)
+    customers = cursor.fetchall()
+    print (customers)
+    return render_template("admin/customer.html", customers = customers)
 
-@views.route('admin/plans')
-def admincPlans():
+@views.route('admin/plans',methods=['GET', 'POST'])
+def AdminPlans():
+    if request.method == 'POST':
+        planType = request.form["type"] 
+        price = request.form["price"]
+
+        cursor = mysql.connection.cursor()
+        sql=f"INSERT INTO health_insurance.plans (Type, Price) VALUES ('{planType}','{price}');"
+        cursor.execute(sql)
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
     return render_template("admin/plans.html")
 
-@views.route('admin/hospitals')
-def adminHospitals():
+@views.route('admin/hospitals',methods=['GET', 'POST'])
+def AdminHospitals():
+    if request.method == 'POST':
+        name = request.form["name"]
+        city = request.form["city"]
+        street = request.form["street"]
+        phone = request.form["phone"]
+        
+        cursor = mysql.connection.cursor()
+        sql=f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
+        cursor.execute(sql)
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
     return render_template("admin/hospitals.html")
 
 @views.route('admin/claims')
