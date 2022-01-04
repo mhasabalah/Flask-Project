@@ -1,3 +1,4 @@
+from os import name
 from flask import Blueprint, render_template, request , flash
 from . import mysql
 
@@ -78,6 +79,7 @@ def AdminPlans():
     if request.method == 'POST':
         planType = request.form["type"] 
         price = request.form["price"]
+
         cursor = mysql.connection.cursor()
         sql=f"INSERT INTO health_insurance.plans (Type, Price) VALUES ('{planType}','{price}');"
         cursor.execute(sql)
@@ -86,8 +88,20 @@ def AdminPlans():
         return f"Done!!"
     return render_template("admin/plans.html")
 
-@views.route('admin/hospitals')
-def adminHospitals():
+@views.route('admin/hospitals',methods=['GET', 'POST'])
+def AdminHospitals():
+    if request.method == 'POST':
+        name = request.form["name"]
+        city = request.form["city"]
+        street = request.form["street"]
+        phone = request.form["phone"]
+        
+        cursor = mysql.connection.cursor()
+        sql=f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
+        cursor.execute(sql)
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
     return render_template("admin/hospitals.html")
 
 @views.route('admin/claims')
