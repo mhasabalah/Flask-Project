@@ -1,5 +1,7 @@
 from os import name
 from flask import Blueprint, render_template, request , flash
+from flask.helpers import url_for
+from werkzeug.utils import redirect
 from . import mysql
 
 
@@ -45,10 +47,28 @@ def plans():
     return render_template("customer/PurchasedPlans.html")
     
 
+# @views.route('customer/claims')
+# def claims():
+#     return render_template("customer/claims.html")
+    
+
 @views.route('customer/claims')
 def claims():
+    if request.method == 'POST':
+        Customer_Id = request.form["CustomerId"] 
+        Dependant_ID = request.form["DependantID"]
+        Cost = request.form["ExpectedCost"]
+        Description = request.form["Description"]
+        Hospital_name = request.form["RequiredHopsital"]
+        cursor = mysql.connection.cursor()
+        Hospital_id = f"select hospitals.Hospital_id from hospitals where hospitals.Name ='{Hospital_name}'"
+        sql=f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID, Cost ,ddescription , Hospital_id ) VALUES ('{Customer_Id}','{Dependant_ID}' ,'{Cost}', '{Description}' ,'{Hospital_id}');"
+        cursor.execute(Hospital_id)
+        cursor.execute(sql)
+        mysql.connection.commit()
+        cursor.close()
+        return f"Done!!"
     return render_template("customer/claims.html")
-    
 
 @views.route('/tryy')
 def tryy():
@@ -104,7 +124,23 @@ def AdminHospitals():
         return f"Done!!"
     return render_template("admin/hospitals.html")
 
-@views.route('admin/claims')
+@views.route('admin/claims', methods=['GET', 'POST'])
 def adminClaims():
-    return render_template("admin/claims.html")
+    cursor = mysql.connection.cursor()
+    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id"
+    cursor.execute(sql)
+    claims = cursor.fetchall()
+    # if request.method == 'POST':
+        
+    #     cursor = mysql.connection.cursor()
+    #     sql = f"UPDATE claims SET Status = '1' where claims_Id = '{}';"
 
+    return render_template("admin/claims.html",claims = claims)
+
+# @views.route('edit_status/<string:id>', methods=['POST'])
+# def update_status(id):
+#     cursor = mysql.connection.cursor()
+#     sql = f"UPDATE claims SET Status = '1' where claims_Id = '{id}';"
+#     mysql.connection.commit()
+#     cursor.close()
+#     return redirect(url_for('adminClaims'))

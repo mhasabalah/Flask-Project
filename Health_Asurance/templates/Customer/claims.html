@@ -182,35 +182,32 @@
 {% endblock %}
 
 {% block content %}
-
-
- 
           <div class="testbox">
-            <form action="/">
+            <form action="#" methods =["Post"]>
               <div class="banner">
                </div>
               <br/>
               <fieldset>
                 <legend>Customer Information</legend>
                 <div class="item">
-                  <label for="fname"> First Name<span>*</span></label>
-                  <input id="fname" type="text" name="fname" required/>
+                  <label for="fname"> Full Name<span>*</span></label>
+                  <input id="fname" type="text" name="CustomerName" required/>
                 </div>
                 <div class="item">
-                  <label for="lname"> Last Name<span>*</span></label>
-                  <input id="lname" type="text" name="lname" required/>
+                  <label for="lname">Required Hospital<span>*</span></label>
+                  <input id="lname" type="text" name="RequiredHopsital" required/>
                 </div>
                 <div class="item">
-                  <label for="initial">Middle Initial<span>*</span></label>
-                  <input id="initial" type="text" name="initial" required/>
+                  <label for="initial">Expected Cost<span>*</span></label>
+                  <input id="initial" type="number" name="ExpectedCost" required/>
                 </div>
                 <div class="item">
                   <label for="phone">National Id<span>*</span></label>
-                  <input id="phone" type="number"   name="phone" required/>
+                  <input id="phone" type="text" name="CustomerID" required/>
                 </div>
                 <div class="item">
                   <label for="phone">Phone<span>*</span></label>
-                  <input id="phone" type="number"   name="phone" required/>
+                  <input id="phone" type="text"   name="phone" required/>
                 </div>
                    <div class="question">
                   <label>Do you need a physical meeting to consider your file</label>
@@ -223,6 +220,28 @@
                       <input  type="radio" value="none" id="radio_2" name="visit"/>
                       <label for="radio_2" class="radio"><span>No</span></label>
                     </div>
+                    <label>TIs Dependant ? if yes please enter your dependant name </label>
+                    <div class="question-answer">
+                      <div>
+                        <input type="radio" value="none" id="radio_1" name="visit"/>
+                        <label for="radio_1" class="radio"><span>Yes</span></label>
+                      </div>
+                      <div>
+                        <input  type="radio" value="none" id="radio_2" name="visit"/>
+                        <label for="radio_2" class="radio"><span>No</span></label>
+                      </div>
+                      <div class="item">
+                        <label for="phone">Dependant Name<span>*</span></label>
+                        <input id="phone" type="text" name="DependantName" />
+                      </div>
+                      <div class="item">
+                        <label for="phone">National Id<span>*</span></label>
+                        <input id="phone" type="text" name="DependantID" />
+                      </div>
+                      <div class="item">
+                        <label for="phone">Describe the case<span>*</span></label>
+                        <input id="phone" type="text" name="Description" required/>
+                      </div>
                   </div>
                 </div>
               </fieldset>
@@ -231,26 +250,8 @@
                 <legend>Policy Information</legend>
                 <div class="item">
                   <label for="date">Plan starting date<span>*</span></label>
-                  <input id="date" type="date" name="date" required/>
+                  <input id="date" type="date" name="date" />
                   <i class="fas fa-calendar-alt"></i>
-                </div>
-          
-                <div class="question">
-                  <label>Plans selection</label>
-                  <div class="question-answer">
-                    <div>
-                      <input type="radio" value="none" id="radio_1" name="Premium plan A"/>
-                      <label for="radio_1" class="radio"><span>Premium Plan </span></label>
-                    </div>
-                    <div>
-                      <input  type="radio" value="none" id="radio_3" name="Golden plan"/>
-                      <label for="radio_3" class="radio"><span>Golden plan</span></label>
-                    </div>
-                    <div>
-                      <input  type="radio" value="none" id="radio_4" name="Basic plan"/>
-                      <label for="radio_4" class="radio"><span>Basic plan</span></label>
-                    </div>
-                  </div>
                 </div>
                 <div class="item">
                   <label for="instructions"> free area to tell as any additional notes  </label>
