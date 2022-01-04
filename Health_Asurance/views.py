@@ -1,20 +1,10 @@
 from os import name
-<<<<<<< HEAD
 from flask import Blueprint, render_template, request , flash,session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
-=======
-
-from flask import Blueprint, render_template, request , flash,session, g
-from flask.helpers import url_for
-from werkzeug.utils import redirect
-
-from . import mysql
-import functools
->>>>>>> 8d069522b7b31662eab57a0b61b2bfcce14d715d
 
 views = Blueprint('views', __name__)
 
@@ -81,7 +71,7 @@ def profile():
         )
         g.user =cur.fetchone()
         user= g.user
-<<<<<<< HEAD
+
         print(user)
         age=date.today().year - user[2].year - ((date.today().month, date.today().day)<(user[2].month, user[2].day))
 
@@ -98,10 +88,7 @@ def profile():
         )  
         plans = cur.fetchall()         
     return render_template("customer/profile.html", users= user , age =age, dependents =dependents, plans = plans )
-=======
-        print(g.user)
-    return render_template("customer/profile.html", users= user)
->>>>>>> 8d069522b7b31662eab57a0b61b2bfcce14d715d
+
 
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
