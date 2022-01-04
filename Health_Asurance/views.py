@@ -1,9 +1,14 @@
 from os import name
+<<<<<<< HEAD
 from flask import Blueprint, render_template, request , flash
+=======
+from flask import Blueprint, render_template, request , flash,session, g
+>>>>>>> d94b2995da1672d29eea7d276ef619a3b3ab50cc
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
-
+import functools
+from datetime import date
 
 views = Blueprint('views', __name__)
 
@@ -17,21 +22,77 @@ def home():
 def register():
     if request.method == "POST":
         user = request.form
-        print(user)
+        if(user):
+            try:
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO customers(Customer_Name, DateOfBirth, City, Street , Building_Number, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s)", 
+                (user['name'], user['BirthDate'], user['inputCity'], user['Address'], user['inputAddress2'],user['PhoneNumber']))
+                mysql.connection.commit()
 
-        return "done"
-    else:
-        return render_template("register.html")
-
-@views.route('/login')
-def login():
-    if request.method == "POST":
+            except cur.IntegrityError:
+                error = f"User {user['name']} is already registered."
+                print(error)
+            else:
+                return render_template('login.html')
+        flash(error)
     
-        return render_template("login.html")
+    return render_template("register.html")
+
+@views.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        userId = request.form['userId']
+        print(userId)
+        error = None
+        cur = mysql.connection.cursor()
+        cur.execute(
+            'SELECT * FROM customers WHERE customer_Id = %s', (userId,)
+        )
+        
+        user = cur.fetchone()
+        print(user)
+        if user is None:
+            error = 'Incorrect userId.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = user[0]
+            return redirect(url_for('views.profile'))
+
+        flash(error)
+
+    return render_template("login.html")
 
 @views.route('customer/profile')
 def profile():
-    return render_template("customer/profile.html")
+    user_id = session.get('user_id')
+    if user_id is None:
+        g.user = None
+    else:
+        cur = mysql.connection.cursor()
+        cur.execute(
+            'SELECT * FROM customers WHERE customer_Id = %s', (user_id,)
+        )
+        g.user =cur.fetchone()
+        user= g.user
+
+        print(user)
+        age=date.today().year - user[2].year - ((date.today().month, date.today().day)<(user[2].month, user[2].day))
+
+        cur.execute(
+            'select dependants.Name from customers,dependants where customers.Customer_Id =%s and dependants.Customer_Id = customers.Customer_Id'
+            ,(user_id,)
+        )
+        dependents = cur.fetchall()
+        print(dependents)   
+
+        cur.execute(
+            'select distinct customers.Customer_Name,plans.Type from customers,`purchasd plans`,plans where customers.Customer_Id =%s and `purchasd plans`.Customer_Id = customers.Customer_Id and plans.Plan_Id=`purchasd plans`.Plan_Id;'
+            ,(user_id,)
+        )  
+        plans = cur.fetchall()         
+    return render_template("customer/profile.html", users= user , age =age, dependents =dependents, plans = plans )
+
 
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
@@ -69,6 +130,7 @@ def claims():
         cursor.close()
         return f"Done!!"
     return render_template("customer/claims.html")
+<<<<<<< HEAD
 
 @views.route('/tryy')
 def tryy():
@@ -80,6 +142,9 @@ def tryy():
 
     
 
+=======
+    
+>>>>>>> d94b2995da1672d29eea7d276ef619a3b3ab50cc
 ##### Admin #####
 @views.route('admin/profile')
 def adminProfile():
