@@ -265,5 +265,18 @@ def claim_details(id):
     sql=f"select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id and claims_Id = '{id}'"
     cursor.execute(sql)
     claims = cursor.fetchone()
-    print(claims)
     return render_template("admin/ClaimsDetails.html", Claims=claims)
+
+@views.route('admin/claim_details_dep/<string:id>')
+def claim_details_dependent(id):      
+    cursor = mysql.connection.cursor()
+    sql=f'''select claims.claims_Id, dependants.Name as dependent_Name,dependants.RelationShip, dependants.Customer_Id, claims.Cost, 
+            claims.Description, hospitals.Name as Required_Hospital ,claims.Status 
+            from dependants,claims,hospitals 
+            where claims.Dependant_ID = dependants.Dep_ID and claims.hospital_Id = Hospitals.Hospital_Id and claims.claims_Id={id}'''
+    cursor.execute(sql)
+    claims = cursor.fetchone()
+    print(claims)
+    return render_template("admin/ClaimsDetailsDep.html", Claims=claims)
+
+
