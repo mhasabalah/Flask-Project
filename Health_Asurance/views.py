@@ -1,5 +1,4 @@
 from os import name
-from flask import Blueprint, render_template, request, flash
 from flask import Blueprint, render_template, request, flash, session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
@@ -8,7 +7,6 @@ import functools
 from datetime import date
 
 views = Blueprint('views', __name__)
-
 
 ##### Customer #####
 @views.route('/')
@@ -116,7 +114,7 @@ def plans():
 #     return render_template("customer/claims.html")
 
 
-@views.route('customer/claims')
+@views.route('customer/claims' , methods =['GET' , 'POST'])
 def claims():
     if request.method == 'POST':
         Customer_Id = request.form["CustomerId"]
@@ -205,19 +203,14 @@ def update_status(id):
     cursor.close()
     return redirect(url_for('views.adminClaims'))
 
-@views.route('admin/claim_details/<string:id>', methods=['GET'])
-def claim_details(id):
+@views.route('admin/claim_details/<string:id>')
+def claim_details(id):      
     cursor = mysql.connection.cursor()
-    sql=f'''select claims_Id, customers.Customer_Name 
-            , claims.Cost,claims.Description,claims.Hospital_id
-            ,claims.Status from customers,claims 
-            where claims.Customer_Id = customers.Customer_Id AND claims_Id = {id};'''
-
+    sql=f'select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id'
     cursor.execute(sql)
-    claims = cursor.fetchall()
+    claims = cursor.fetchone()
     print(claims)
-
-    return render_template("admin/ClaimsDetails.html", claims=claims)
+    return render_template("admin/ClaimsDetails.html", Claims=claims)
 
 
 
