@@ -1,17 +1,19 @@
 {% extends "NavBar/adminNavbar.html" %}
 {% block title %}Insurance Claims{% endblock %}
 {% block content %}
+
 <body>
-  
+
   <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Name</th>
-        <th scope="col">Description</th>
         <th scope="col">Cost</th>
+        <th scope="col">Description</th>
         <th scope="col">Hospital</th>
         <th scope="col">Status</th>
+        <th scope="col">Status Action</th>
       </tr>
     </thead>
     <tbody>
@@ -23,20 +25,46 @@
         <td>{{record[2]}}</td>
         <td>{{record[3]}}</td>
         <td>{{record[4]}}</td>
-        <td>{{record[5]}}</td>
         <td>
-          {{record[6]}}
-  
+          {% if record[5] == 1 %}
+          solved
+          {% else %}
+          resolved
+          {% endif %}
+        </td>
+        <td>
+          <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
+            style="display: inline-block;">
+            <input type="hidden" name="_method" value="solved">
+            <input type="submit" value="solved" class="btn btn-success">
+          </form>
+          <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
+            style="display: inline-block;">
+            <input type="hidden" name="_method" value="resolved">
+            <input type="submit" value="resolved" class="btn btn-danger">
+          </form>
+        </td>
+
+        <td>
+        <a href="{{url_for('views.claim_details', id = record[0])}}" class="btn btn-info">info</a>
         </td>
       </tr>
+
 
       {%endfor%}
 
     </tbody>
   </table>
-{% endblock %}
+  {% endblock %}
 
-        <!-- <form action="{{url_for('update_status', id = claim.id)}}">
-            <input type="hidden" name="_method" value="EDIT">
-            <input type="submit" value="Edit" class="btn btn-denger" >
-          </form> -->
+
+
+
+
+
+
+
+  <!-- <form action="{{url_for('update_status', id = claim.id)}}">
+    <input type="hidden" name="_method" value="EDIT">
+    <input type="submit" value="Edit" class="btn btn-denger" >
+  </form> -->
