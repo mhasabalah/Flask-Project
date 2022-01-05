@@ -10,7 +10,9 @@
 </style>
 {% endblock %}
 
-  <div class="dropdown show">
+<h1 class="text-center">Dependent Claims</h1>
+<div class="d-flex">
+  <div class="dropdown show mr-auto p-2">
     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Dependent Claims
     </a>
@@ -20,6 +22,12 @@
         <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
     </div>
   </div>
+  <form  class="p-2" method="POST">
+    <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
+    <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
+  </form>
+</div>
+
 <br>
   <table class="table table-striped">
     <thead>

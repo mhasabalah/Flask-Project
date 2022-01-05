@@ -11,6 +11,8 @@ from datetime import date
 views = Blueprint('views', __name__)
 
 ##### Customer #####
+
+
 @views.route('/')
 def home():
     return render_template("Main/index.html")
@@ -27,9 +29,10 @@ def register():
                             (user['name'], user['BirthDate'], user['inputCity'], user['Address'], user['inputAddress2'], user['PhoneNumber']))
                 mysql.connection.commit()
                 cur.execute("select Customer_Id from customers where Customer_Name=%s and PhoneNumber= %s;",
-                             (user['name'],user['PhoneNumber']))
+                            (user['name'], user['PhoneNumber']))
                 customerID = cur.fetchone()
-                flash('You were successfully registered in and your CODE is {{customerID}}')
+                flash(
+                    'You were successfully registered in and your CODE is {{customerID}}')
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
                 print(error)
@@ -38,6 +41,7 @@ def register():
         flash(error)
 
     return render_template("register.html")
+
 
 @views.route('/login', methods=('GET', 'POST'))
 def login():
@@ -63,6 +67,7 @@ def login():
         flash(error)
 
     return render_template("login.html")
+
 
 @views.route('customer/profile')
 def profile():
@@ -96,6 +101,7 @@ def profile():
         plans = cur.fetchall()
     return render_template("customer/profile.html", users=user, age=age, dependents=dependents, plans=plans)
 
+
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
     cursor = mysql.connection.cursor()
@@ -105,6 +111,7 @@ def hospitals():
     print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
+
 @views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
     user_id = session.get('user_id')
@@ -112,36 +119,37 @@ def plans():
         if request.form['submit_button'] == 'basic':
             cur = mysql.connection.cursor()
             cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
-                ,(user_id,1)
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
+                    user_id, 1)
             )
             mysql.connection.commit()
-        
+
         elif request.form['submit_button'] == 'premuim':
             cur = mysql.connection.cursor()
             cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
-                ,(user_id,2)
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
+                    user_id, 2)
             )
             mysql.connection.commit()
 
         elif request.form['submit_button'] == 'gold':
             cur = mysql.connection.cursor()
             cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
-                ,(user_id,3)
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
+                    user_id, 3)
             )
             mysql.connection.commit()
 
     return render_template("customer/PurchasedPlans.html")
+
 
 @views.route('customer/dependants', methods=['GET', 'POST'])
 def dependants():
     user_id = session.get('user_id')
     cur = mysql.connection.cursor()
     cur.execute(
-        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s'
-         , (user_id,)
+        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s', (
+            user_id,)
     )
     plans = cur.fetchall()
 
@@ -150,19 +158,19 @@ def dependants():
             dependant = request.form
             cur = mysql.connection.cursor()
             cur.execute(
-                'INSERT INTO dependants(Name, DateOfBirth, RelationShip, Beneficiary_plan, Customer_Id) Values(%s , %s, %s, %s ,%s)'
-                , (dependant['Name'], dependant['BirthDate'], dependant['relationShip'],dependant['option'],user_id,)
+                'INSERT INTO dependants(Name, DateOfBirth, RelationShip, Beneficiary_plan, Customer_Id) Values(%s , %s, %s, %s ,%s)', (
+                    dependant['Name'], dependant['BirthDate'], dependant['relationShip'], dependant['option'], user_id,)
             )
             mysql.connection.commit()
 
         except cur.IntegrityError:
             error = "Database error"
             print(error)
-    
-    return render_template("customer/dependants.html", plans = plans)
+
+    return render_template("customer/dependants.html", plans=plans)
 
 
-@views.route('customer/claims' , methods =['GET' , 'POST'])
+@views.route('customer/claims', methods=['GET', 'POST'])
 def claims():
     if request.method == 'POST':
         Customer_Id = request.form["CustomerId"]
@@ -181,9 +189,12 @@ def claims():
     return render_template("customer/claims.html")
 
 ##### Admin #####
+
+
 @views.route('admin/profile')
 def adminProfile():
     return render_template("admin/profile.html")
+
 
 @views.route('admin/customer', methods=['GET'])
 def AdminCustomer():
@@ -192,6 +203,7 @@ def AdminCustomer():
     cursor.execute(sql)
     customers = cursor.fetchall()
     return render_template("admin/customer.html", customers=customers)
+
 
 @views.route('admin/plans', methods=['GET', 'POST'])
 def AdminPlans():
@@ -206,6 +218,7 @@ def AdminPlans():
         cursor.close()
         return f"Done!!"
     return render_template("admin/plans.html")
+
 
 @views.route('admin/hospitals', methods=['GET', 'POST'])
 def AdminHospitals():
@@ -223,27 +236,6 @@ def AdminHospitals():
         return f"Done!!"
     return render_template("admin/hospitals.html")
 
-@views.route('admin/claims', methods=['GET', 'POST'])
-def adminClaims():
-    cursor = mysql.connection.cursor()
-    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id and claims.Dependant_ID is null"
-    cursor.execute(sql)
-    claims = cursor.fetchall()
-
-    return render_template("admin/claims.html", claims=claims)
-
-@views.route('admin/claims-dependent', methods=['GET', 'POST'])
-def adminClaimsDependent():
-    cursor = mysql.connection.cursor()
-    sql=f'''select claims_Id, dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
-            claims.Hospital_id,hospitals.Name as Hospital_Name,claims.Status 
-            from dependants,claims,hospitals 
-            where claims.Dependant_ID = dependants.Dep_ID and hospitals.Hospital_id=claims.Hospital_id '''
-    
-    cursor.execute(sql)
-    claims = cursor.fetchall()
-
-    return render_template("admin/ClaimsDependent.html", claims=claims)
 
 @views.route('edit_status/<string:id>', methods=['POST'])
 def update_status(id):
@@ -259,18 +251,20 @@ def update_status(id):
     cursor.close()
     return redirect(url_for('views.adminClaims'))
 
+
 @views.route('admin/claim_details/<string:id>')
-def claim_details(id):      
+def claim_details(id):
     cursor = mysql.connection.cursor()
-    sql=f"select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id and claims_Id = '{id}'"
+    sql = f"select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id and claims_Id = '{id}'"
     cursor.execute(sql)
     claims = cursor.fetchone()
     return render_template("admin/ClaimsDetails.html", Claims=claims)
 
+
 @views.route('admin/claim_details_dep/<string:id>')
-def claim_details_dependent(id):      
+def claim_details_dependent(id):
     cursor = mysql.connection.cursor()
-    sql=f'''select claims.claims_Id, dependants.Name as dependent_Name,dependants.RelationShip, dependants.Customer_Id, claims.Cost, 
+    sql = f'''select claims.claims_Id, dependants.Name as dependent_Name,dependants.RelationShip, dependants.Customer_Id, claims.Cost, 
             claims.Description, hospitals.Name as Required_Hospital ,claims.Status 
             from dependants,claims,hospitals 
             where claims.Dependant_ID = dependants.Dep_ID and claims.hospital_Id = Hospitals.Hospital_Id and claims.claims_Id={id}'''
@@ -280,3 +274,54 @@ def claim_details_dependent(id):
     return render_template("admin/ClaimsDetailsDep.html", Claims=claims)
 
 
+@views.route('admin/claims', methods=['GET', 'POST'])
+def adminClaims():
+    claims = AdminClaimsSql()
+    return render_template("admin/claims.html", claims=claims)
+
+
+@views.route('admin/claims-dependent', methods=['GET', 'POST'])
+def adminClaimsDependent():
+    claims = AdminClaimsDependentSql()
+    return render_template("admin/ClaimsDependent.html", claims=claims)
+
+
+def AdminClaimsDependentSql():
+    sql = f'''select claims_Id, dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
+            claims.Hospital_id,hospitals.Name as Hospital_Name,claims.Status 
+            from dependants,claims,hospitals 
+            where claims.Dependant_ID = dependants.Dep_ID and hospitals.Hospital_id=claims.Hospital_id '''
+
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'resolved':
+            sql = sql + " and claims.Status = 1"
+        elif request.form['submit_button'] == 'unresolved':
+            sql = sql + " and claims.Status = 0"
+        else:
+            pass
+
+    cursor = mysql.connection.cursor()
+    cursor.execute(sql)
+    claims = cursor.fetchall()
+    return claims
+
+
+def AdminClaimsSql():
+    sql = f'''select claims_Id, customers.Customer_Name ,
+            claims.Cost,claims.Description,claims.Hospital_id,
+            claims.Status from customers,
+            claims where claims.Customer_Id = customers.Customer_Id 
+            and claims.Dependant_ID is null'''
+
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'resolved':
+            sql = sql + " and claims.Status = 1"
+        elif request.form['submit_button'] == 'unresolved':
+            sql = sql + " and claims.Status = 0"
+        else:
+            pass
+
+    cursor = mysql.connection.cursor()
+    cursor.execute(sql)
+    claims = cursor.fetchall()
+    return claims

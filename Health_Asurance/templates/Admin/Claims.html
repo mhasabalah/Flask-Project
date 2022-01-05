@@ -9,18 +9,28 @@
 }
 </style>
 {% endblock %}
+  <h1 class="text-center">Coustmer Claims</h1>
 
-  <div class="dropdown show">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Coustmer Claims
-    </a>
-  
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
-      <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
+  <div class="d-flex">
+    <div class="dropdown show mr-auto p-2" style="display: inline-block;">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Coustmer Claims
+      </a>
+    
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
+        <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
+      </div>
     </div>
+  
+    <form method="POST" class="p-2"  style="display: inline-block; ">
+      <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
+      <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
+    </form>
   </div>
-<br>
+ 
+
+<br><br>
   <table class="table table-striped">
     <thead>
       <tr>
