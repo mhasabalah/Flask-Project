@@ -2,6 +2,72 @@
 {% block title %}Insurance Claims{% endblock %}
 
 {% block content %}
-<h1>This will be details</h1>
+<div class="col-md-8">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Claim Id</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            {{Claims[0][0]}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Customer Name</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            {{Claims[0][1]}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Claim cost</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            {{Claims[0][2]}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Description</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            {{Claims[0][3]}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Required Hospital</h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            {{Claims[0][4]}}
+          </div>
+        </div>
+        {% if Claims[0][5] == 1 %}
+        <hr>
+        <div class="row">
+          <div class="col-sm-3">
+            <h6 class="mb-0">Status </h6>
+          </div>
+          <div class="col-sm-9 text-secondary">
+            solved
+          {% else %}
+          <hr>
+          <div class="row">
+            <div class="col-sm-3">
+              <h6 class="mb-0">Status </h6>
+            </div>
+            <div class="col-sm-9 text-secondary">
+              resolved
+          {% endif %}
+          </div>
+        </div>
 
+       
 {% endblock %}
