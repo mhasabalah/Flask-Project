@@ -1,11 +1,12 @@
 from os import name
-from flask import Blueprint, render_template, request , flash,session, g
+
+from flask import Blueprint, render_template, request, flash, session, g
+
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
-
 
 views = Blueprint('views', __name__)
 
@@ -25,16 +26,18 @@ def register():
                 cur.execute("INSERT INTO customers(Customer_Name, DateOfBirth, City, Street , Building_Number, PhoneNumber) VALUES (%s, %s, %s, %s, %s, %s)",
                             (user['name'], user['BirthDate'], user['inputCity'], user['Address'], user['inputAddress2'], user['PhoneNumber']))
                 mysql.connection.commit()
-
+                cur.execute("select Customer_Id from customers where Customer_Name=%s and PhoneNumber= %s;",
+                             (user['name'],user['PhoneNumber']))
+                customerID = cur.fetchone()
+                flash('You were successfully registered in and your CODE is {{customerID}}')
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
                 print(error)
             else:
-                return render_template('login.html')
+                return redirect(url_for('views.login'))
         flash(error)
 
     return render_template("register.html")
-
 
 @views.route('/login', methods=('GET', 'POST'))
 def login():
@@ -60,7 +63,6 @@ def login():
         flash(error)
 
     return render_template("login.html")
-
 
 @views.route('customer/profile')
 def profile():
@@ -103,7 +105,6 @@ def hospitals():
     print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
-
 @views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
     user_id = session.get('user_id')
@@ -131,15 +132,34 @@ def plans():
                 ,(user_id,3)
             )
             mysql.connection.commit()
-        else:
-            pass # unknown
-   
+
     return render_template("customer/PurchasedPlans.html")
 
+@views.route('customer/dependants', methods=['GET', 'POST'])
+def dependants():
+    user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s'
+         , (user_id,)
+    )
+    plans = cur.fetchall()
 
-# @views.route('customer/claims')
-# def claims():
-#     return render_template("customer/claims.html")
+    if request.method == "POST":
+        try:
+            dependant = request.form
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'INSERT INTO dependants(Name, DateOfBirth, RelationShip, Beneficiary_plan, Customer_Id) Values(%s , %s, %s, %s ,%s)'
+                , (dependant['Name'], dependant['BirthDate'], dependant['relationShip'],dependant['option'],user_id,)
+            )
+            mysql.connection.commit()
+
+        except cur.IntegrityError:
+            error = "Database error"
+            print(error)
+    
+    return render_template("customer/dependants.html", plans = plans)
 
 
 @views.route('customer/claims' , methods =['GET' , 'POST'])
@@ -160,12 +180,10 @@ def claims():
         return f"Done!!"
     return render_template("customer/claims.html")
 
-
 ##### Admin #####
 @views.route('admin/profile')
 def adminProfile():
     return render_template("admin/profile.html")
-
 
 @views.route('admin/customer', methods=['GET'])
 def AdminCustomer():
@@ -174,7 +192,6 @@ def AdminCustomer():
     cursor.execute(sql)
     customers = cursor.fetchall()
     return render_template("admin/customer.html", customers=customers)
-
 
 @views.route('admin/plans', methods=['GET', 'POST'])
 def AdminPlans():
@@ -189,7 +206,6 @@ def AdminPlans():
         cursor.close()
         return f"Done!!"
     return render_template("admin/plans.html")
-
 
 @views.route('admin/hospitals', methods=['GET', 'POST'])
 def AdminHospitals():
@@ -206,7 +222,6 @@ def AdminHospitals():
         cursor.close()
         return f"Done!!"
     return render_template("admin/hospitals.html")
-
 
 @views.route('admin/claims', methods=['GET', 'POST'])
 def adminClaims():
