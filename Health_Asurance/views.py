@@ -1,11 +1,17 @@
 from os import name
+<<<<<<< Updated upstream
 from flask import Blueprint, render_template, request, flash
 from flask import Blueprint, render_template, request, flash, session, g
+=======
+
+from flask import Blueprint, render_template, request , flash,session, g
+>>>>>>> Stashed changes
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
+
 
 views = Blueprint('views', __name__)
 
@@ -95,7 +101,6 @@ def profile():
         plans = cur.fetchall()
     return render_template("customer/profile.html", users=user, age=age, dependents=dependents, plans=plans)
 
-
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
     cursor = mysql.connection.cursor()
@@ -106,8 +111,36 @@ def hospitals():
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
 
-@views.route('customer/plans')
+@views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
+    user_id = session.get('user_id')
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'basic':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,1)
+            )
+            mysql.connection.commit()
+        
+        elif request.form['submit_button'] == 'premuim':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,2)
+            )
+            mysql.connection.commit()
+
+        elif request.form['submit_button'] == 'gold':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,3)
+            )
+            mysql.connection.commit()
+        else:
+            pass # unknown
+   
     return render_template("customer/PurchasedPlans.html")
 
 
