@@ -9,22 +9,40 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
 
     <style>
-        body{
-            margin: 30px;
-        }
+      .divider:after,
+      .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+      }
     </style>
   </head>
 <body>
-    <h2 class="text-uppercase text-center mb-5">Login with you account</h2>
-    <form method="post" action="" >
-      <div class="form-outline mb-4">
-        <input type="number" class="form-control" name="userId" required="ID is required" placeholder="Your ID"/>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+          <div class="col-md-8 col-lg-7 col-xl-6">
+            <img src="{{ url_for('static', filename='images/Doctors.svg') }}" class="img-fluid" alt="Phone image">
+            
+          </div>
+          <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+            <form method="post">
+              <h1>Log in</h1><br>
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input type="number" id="form1Example13" required="ID is required" name="userId" class="form-control form-control-lg" />
+                <label class="form-label" for="form1Example13">User Id</label>
+              </div>
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+              <a href="{{url_for('views.register')}}" class="btn  btn-success btn-lg btn-block">Sign Up</a>
+            </form>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="d-flex justify-content-center mt-5">
-        <button type="submit" class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Login</button>
-      </div>
-    </form>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
@@ -33,6 +51,5 @@
       {% endfor %}
       </ul>
     {% endif %}
-    {% endwith %} 
-   
+    {% endwith %}
 </body> 

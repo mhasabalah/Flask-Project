@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
-
   <link rel="stylesheet" href="{{ url_for('static', filename='css/hospitalStyle.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styleBase.css') }}">
 
@@ -36,13 +35,13 @@
           <span class="nav_logo-name">Health Insurance</span>
         </a>
         <div class="nav_list">
-          <a href="/admin/profile" class="nav_link">
+          <a href="/admin/customer" class="nav_link">
             <i class="bx bx-user nav_icon"></i>
             <span class="nav_name">Coustmer</span>
           </a>
           <a href="/admin/claims" class="nav_link">
             <i class="bx bx-grid-alt nav_icon"></i>
-            <span class="nav_name">Dashboard</span>
+            <span class="nav_name">Claims</span>
           </a>
           <a href="/admin/hospitals" class="nav_link">
             <i class="bx bx-message-square-detail nav_icon"></i>
@@ -50,7 +49,7 @@
           </a>
           <a href="/admin/plans" class="nav_link">
             <i class="bx bx-bookmark nav_icon"></i>
-            <span class="nav_name">Claim</span>
+            <span class="nav_name">Plans</span>
           </a>
         </div>
       </div>
