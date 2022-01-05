@@ -1,11 +1,5 @@
 from os import name
-<<<<<<< Updated upstream
-from flask import Blueprint, render_template, request, flash
-from flask import Blueprint, render_template, request, flash, session, g
-=======
-
 from flask import Blueprint, render_template, request , flash,session, g
->>>>>>> Stashed changes
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
@@ -14,7 +8,6 @@ from datetime import date
 
 
 views = Blueprint('views', __name__)
-
 
 ##### Customer #####
 @views.route('/')
@@ -149,7 +142,7 @@ def plans():
 #     return render_template("customer/claims.html")
 
 
-@views.route('customer/claims')
+@views.route('customer/claims' , methods =['GET' , 'POST'])
 def claims():
     if request.method == 'POST':
         Customer_Id = request.form["CustomerId"]
@@ -218,11 +211,24 @@ def AdminHospitals():
 @views.route('admin/claims', methods=['GET', 'POST'])
 def adminClaims():
     cursor = mysql.connection.cursor()
-    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id"
+    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id and claims.Dependant_ID is null"
     cursor.execute(sql)
     claims = cursor.fetchall()
 
     return render_template("admin/claims.html", claims=claims)
+
+@views.route('admin/claims-dependent', methods=['GET', 'POST'])
+def adminClaimsDependent():
+    cursor = mysql.connection.cursor()
+    sql=f'''select claims_Id, dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
+            claims.Hospital_id,hospitals.Name as Hospital_Name,claims.Status 
+            from dependants,claims,hospitals 
+            where claims.Dependant_ID = dependants.Dep_ID and hospitals.Hospital_id=claims.Hospital_id '''
+    
+    cursor.execute(sql)
+    claims = cursor.fetchall()
+
+    return render_template("admin/ClaimsDependent.html", claims=claims)
 
 @views.route('edit_status/<string:id>', methods=['POST'])
 def update_status(id):
@@ -238,19 +244,14 @@ def update_status(id):
     cursor.close()
     return redirect(url_for('views.adminClaims'))
 
-@views.route('admin/claim_details/<string:id>', methods=['GET'])
-def claim_details(id):
+@views.route('admin/claim_details/<string:id>')
+def claim_details(id):      
     cursor = mysql.connection.cursor()
-    sql=f'''select claims_Id, customers.Customer_Name 
-            , claims.Cost,claims.Description,claims.Hospital_id
-            ,claims.Status from customers,claims 
-            where claims.Customer_Id = customers.Customer_Id AND claims_Id = {id};'''
-
+    sql=f'select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id'
     cursor.execute(sql)
-    claims = cursor.fetchall()
+    claims = cursor.fetchone()
     print(claims)
-
-    return render_template("admin/ClaimsDetails.html", claims=claims)
+    return render_template("admin/ClaimsDetails.html", Claims=claims)
 
 
 
