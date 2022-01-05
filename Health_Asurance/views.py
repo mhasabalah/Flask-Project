@@ -244,14 +244,24 @@ def update_status(id):
     cursor.close()
     return redirect(url_for('views.adminClaims'))
 
+# @views.route('admin/claim_details/<string:id>')
+# def claim_details(id):      
+#     cursor = mysql.connection.cursor()
+#     sql=f'select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id'
+#     cursor.execute(sql)
+#     claims = cursor.fetchone()
+#     print(claims)
+#     return render_template("admin/ClaimsDetails.html", Claims=claims)
+
+
+
+
+
 @views.route('admin/claim_details/<string:id>')
 def claim_details(id):      
     cursor = mysql.connection.cursor()
-    sql=f'select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id'
+    sql=f"select claims.claims_Id, customers.Customer_Name , claims.Cost, claims.Description, hospitals.Name as RequiredHospital ,claims.Status from customers,claims,hospitals where claims.Customer_Id = customers.Customer_Id and claims.hospital_Id = Hospitals.Hospital_Id and claims_Id = '{id}'"
     cursor.execute(sql)
     claims = cursor.fetchone()
     print(claims)
     return render_template("admin/ClaimsDetails.html", Claims=claims)
-
-
-
