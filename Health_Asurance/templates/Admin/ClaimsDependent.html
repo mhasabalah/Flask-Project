@@ -12,12 +12,12 @@
 
   <div class="dropdown show">
     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Coustmer Claims
+        Dependent Claims
     </a>
   
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
-      <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
+        <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
+        <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
     </div>
   </div>
 <br>
@@ -25,7 +25,7 @@
     <thead>
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Name</th>
+        <th scope="col">Dependent Name</th>
         <th scope="col">Cost</th>
         <th scope="col">Description</th>
         <th scope="col">Hospital</th>
@@ -38,12 +38,12 @@
 
       <tr>
         <th>{{record[0]}}</th>
-        <td>{{record[1]}}</td>
         <td>{{record[2]}}</td>
         <td>{{record[3]}}</td>
         <td>{{record[4]}}</td>
+        <td>{{record[6]}}</td>
         <td>
-          {% if record[5] == 1 %}
+          {% if record[7] == 1 %}
           solved
           {% else %}
           resolved
