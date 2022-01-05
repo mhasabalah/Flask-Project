@@ -19,7 +19,8 @@ def create_app():
 
     app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = '01015513347'
+
+    app.config['MYSQL_PASSWORD'] = 'Phud8asp'
     app.config['MYSQL_DB'] = 'health_insurance'
 
     mysql = MySQL(app)
