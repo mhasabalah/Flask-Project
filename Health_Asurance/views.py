@@ -1,10 +1,11 @@
 from os import name
-from flask import Blueprint, render_template, request, flash, session, g
+from flask import Blueprint, render_template, request , flash,session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
+
 
 views = Blueprint('views', __name__)
 
@@ -93,7 +94,6 @@ def profile():
         plans = cur.fetchall()
     return render_template("customer/profile.html", users=user, age=age, dependents=dependents, plans=plans)
 
-
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
     cursor = mysql.connection.cursor()
@@ -104,8 +104,36 @@ def hospitals():
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
 
-@views.route('customer/plans')
+@views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
+    user_id = session.get('user_id')
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'basic':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,1)
+            )
+            mysql.connection.commit()
+        
+        elif request.form['submit_button'] == 'premuim':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,2)
+            )
+            mysql.connection.commit()
+
+        elif request.form['submit_button'] == 'gold':
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);'
+                ,(user_id,3)
+            )
+            mysql.connection.commit()
+        else:
+            pass # unknown
+   
     return render_template("customer/PurchasedPlans.html")
 
 
@@ -183,11 +211,24 @@ def AdminHospitals():
 @views.route('admin/claims', methods=['GET', 'POST'])
 def adminClaims():
     cursor = mysql.connection.cursor()
-    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id"
+    sql = "select claims_Id, customers.Customer_Name , claims.Cost,claims.Description,claims.Hospital_id,claims.Status from customers,claims where claims.Customer_Id = customers.Customer_Id and claims.Dependant_ID is null"
     cursor.execute(sql)
     claims = cursor.fetchall()
 
     return render_template("admin/claims.html", claims=claims)
+
+@views.route('admin/claims-dependent', methods=['GET', 'POST'])
+def adminClaimsDependent():
+    cursor = mysql.connection.cursor()
+    sql=f'''select claims_Id, dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
+            claims.Hospital_id,hospitals.Name as Hospital_Name,claims.Status 
+            from dependants,claims,hospitals 
+            where claims.Dependant_ID = dependants.Dep_ID and hospitals.Hospital_id=claims.Hospital_id '''
+    
+    cursor.execute(sql)
+    claims = cursor.fetchall()
+
+    return render_template("admin/ClaimsDependent.html", claims=claims)
 
 @views.route('edit_status/<string:id>', methods=['POST'])
 def update_status(id):
