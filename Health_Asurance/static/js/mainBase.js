@@ -2,7 +2,12 @@ $(document).ready(function () {
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
             })
+
+            $(".chosen-select").chosen({
+                no_results_text: "Oops, nothing found!"
+              })
 });
+
 
 
 

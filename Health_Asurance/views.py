@@ -299,7 +299,9 @@ def AdminPlans():
         cursor.execute(sql)
         mysql.connection.commit()
         cursor.close()
-        return f"Done!!"
+
+        flash(f'{planType} is added successfully.')
+
     return render_template("admin/plans.html")
 
 
@@ -315,24 +317,25 @@ def AdminHospitals():
         city = request.form["city"]
         street = request.form["street"]
         phone = request.form["phone"]
-        plan = request.form["plantype"]
+        plan = request.form.getlist("plantype")
  
+
+        print(plan)
         cursor = mysql.connection.cursor()
+        
         sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
          
         cursor.execute(sql)
         mysql.connection.commit()
 
-        cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",
-                             (name,phone))
+        cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",(name,phone))
         hospitalID = cursor.fetchone()
-
-        cursor.execute(
-            f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan}');"
-        )
+        
+        for i in range(len(plan)):
+            cursor.execute(f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan[i]}');")
         mysql.connection.commit()
         cursor.close()
-        return f"Done!!"
+        flash(f'{name} is added successfully.')
      
     return render_template("admin/hospitals.html" , plans = plans)
 

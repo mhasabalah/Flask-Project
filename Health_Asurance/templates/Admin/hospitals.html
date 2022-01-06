@@ -29,15 +29,13 @@
     
       <div class="form-group">
           <label for="RelationShip">plan</label>
-          <select name="plantype" class="form-select form-control" aria-label="select Plan">
-              <option selected>select Plan</option>
-              {% for plan in plans %}
+          <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select form-control" name="plantype">
+            <option value=""></option>
+            {% for plan in plans %}
               <option name ="{{plan[0]}}" value="{{plan[0]}}">{{plan[1]}}</option>
-              {%endfor%}
+            {%endfor%}
           </select>
       </div>
-      
-
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
 </div>
