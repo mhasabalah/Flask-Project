@@ -172,13 +172,28 @@ button{
     </style>
 </head>
 <body>
+  
+    
 
     <section class="showcase">
+      
         <header>
-          <a  style="text-decoration: none;" href="{{url_for('views.home')}}"><h2 class="logo">Health</h2></a>
+          <div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+            {% endwith %}
+          </div>
+        
+          <a  style="text-decoration: none;" href="{{url_for('views.home')}}"><h2  class="logo"></h2></a>
           <div class="toggle"></div>
         </header>
-
+       
     
     <div class="background">
         <div class="shape"></div>
@@ -194,6 +209,7 @@ button{
         <button><a href="{{url_for('views.register')}}"></a>SignUp</button>
         
     </form>
+    
 
     </section>
 
@@ -205,16 +221,7 @@ button{
           <li><a href="{{url_for('views.login')}}">Login</a></li>
         </ul>
       </div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class=flashes>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-    {% endwith %}
-
+    
     <script src="{{ url_for('static', filename='js/mainHome.js') }}"></script>
 
 </body>

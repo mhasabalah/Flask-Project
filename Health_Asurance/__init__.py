@@ -18,11 +18,9 @@ def create_app():
     )
     app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
-<<<<<<< Updated upstream
-    app.config['MYSQL_PASSWORD'] = 'Moh1425'
-=======
+
     app.config['MYSQL_PASSWORD'] ='Phud8asp'
->>>>>>> Stashed changes
+
     app.config['MYSQL_DB'] = 'health_insurance'
 
     mysql = MySQL(app)

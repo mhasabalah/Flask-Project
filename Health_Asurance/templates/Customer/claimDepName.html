@@ -1,0 +1,25 @@
+{% extends "CustomerNavBar/index.html" %}
+
+{% block title %}Claim{% endblock %}
+{% block head %}
+
+<div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
+  <form method="post" action="">
+    <legend>Dependants Information</legend>
+             
+    <div class="item">
+      <label for="fname"> Full Name<span>*</span></label>
+      <select name="dependent" class="form-select" aria-label="select Benefit Plan">
+        <option selected>select Dependant</option>
+        {% for dependent in dependants %}
+        <option name ="{{dependent[1]}}" value="{{dependent[1]}}">{{dependent[0]}}</option>
+        {%endfor%}
+    </select>
+    <button class="btn btn-primary" style="margin-top: 30px;" type="submit" name="submit_button" value="premuim" >File Claim</button>
+    </div>
+</form>
+</div>
+
+
+
+{% endblock %} 

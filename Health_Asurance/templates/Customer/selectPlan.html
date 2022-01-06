@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h1>Add Dependants</h1>
+<h1>Select Your Beneficiary plan </h1>
 <div>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -17,27 +17,7 @@
   </div>
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
 <form method="post" action="" >
-    <div class="form-row">
-        <div class="form-group">
-        <label for="inputEmail4">Name</label>
-        <input type="text" class="form-control" name="Name" required="Name id required">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-        <label for="inputZip">Date Of Birth</label>
-        <input type="Date" class="form-control" name="BirthDate" required="Date Of Birth is required">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group ">
-            <label for="RelationShip">RelationShip</label>
-            <input type="text" class="form-control" name="relationShip" required="RelationShip is required">
-        </div>
-        </div>
-
+    
     <div class="form-row">
     <div class="form-group ">
         <label for="RelationShip">Benefit plan</label>
@@ -55,6 +35,6 @@
     </div>
     
 </form>
-
 </div>
+
 {% endblock %} 

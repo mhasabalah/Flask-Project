@@ -7,7 +7,7 @@ from werkzeug.utils import redirect
 from . import mysql
 import functools
 from datetime import date
-
+from collections import Counter
 views = Blueprint('views', __name__)
 
 ##### Customer #####
@@ -35,18 +35,14 @@ def register():
                 cur.execute("select Customer_Id from customers where Customer_Name=%s and PhoneNumber= %s;",
                             (user['name'], user['PhoneNumber']))
                 customerID = cur.fetchone()
-<<<<<<< Updated upstream
-                flash(
-                    'You were successfully registered in and your CODE is {{customerID}}')
-=======
                 
->>>>>>> Stashed changes
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
                 print(error)
             else:
                 flash(f'You were successfully registered in and your CODE is {customerID[0]}')
                 return redirect(url_for('views.login'))
+        
         flash(error)
 
     return render_template("register.html")
@@ -91,7 +87,6 @@ def profile():
         g.user = cur.fetchone()
         user = g.user
 
-        print(user)
         age = date.today().year - \
             user[2].year - ((date.today().month, date.today().day)
                             < (user[2].month, user[2].day))
@@ -104,10 +99,17 @@ def profile():
         print(dependents)
 
         cur.execute(
-            'select distinct customers.Customer_Name,plans.Type from customers,`purchasd plans`,plans where customers.Customer_Id =%s and `purchasd plans`.Customer_Id = customers.Customer_Id and plans.Plan_Id=`purchasd plans`.Plan_Id;', (
+            'select customers.Customer_Name,plans.Type from customers,`purchasd plans`,plans where customers.Customer_Id =%s and `purchasd plans`.Customer_Id = customers.Customer_Id and plans.Plan_Id=`purchasd plans`.Plan_Id;', (
                 user_id,)
         )
-        plans = cur.fetchall()
+        plan = cur.fetchall()
+
+        plans = {}
+        for item in plan:
+            if (item in plans):
+                plans[item] += 1
+            else :
+                plans[item] = 1
     return render_template("customer/profile.html", users=user, age=age, dependents=dependents, plans=plans)
 
 
@@ -120,7 +122,6 @@ def hospitals():
     print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
-
 @views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
     user_id = session.get('user_id')
@@ -132,6 +133,7 @@ def plans():
                     user_id, 1)
             )
             mysql.connection.commit()
+            flash(f'You have successfully bought A basic plan')
 
         elif request.form['submit_button'] == 'premuim':
             cur = mysql.connection.cursor()
@@ -140,6 +142,7 @@ def plans():
                     user_id, 2)
             )
             mysql.connection.commit()
+            flash(f'You have successfully bought A premuim plan')
 
         elif request.form['submit_button'] == 'gold':
             cur = mysql.connection.cursor()
@@ -148,11 +151,10 @@ def plans():
                     user_id, 3)
             )
             mysql.connection.commit()
+            flash(f'You have successfully bought A Golden plan')
 
     return render_template("customer/PurchasedPlans.html")
 
-<<<<<<< Updated upstream
-=======
 @views.route('/customer/benefitPlan', methods=['GET', 'POST'])
 def benefit():
     user_id = session.get('user_id')
@@ -171,9 +173,10 @@ def benefit():
             (plan['option'],user_id)
         )
         mysql.connection.commit()
+        flash(f"successfully choosed {plan['option']} as your Beneficiary plan")
 
     return render_template("customer/selectPlan.html", plans = plans)
->>>>>>> Stashed changes
+
 
 @views.route('customer/dependants', methods=['GET', 'POST'])
 def dependants():
@@ -194,14 +197,14 @@ def dependants():
                     dependant['Name'], dependant['BirthDate'], dependant['relationShip'], dependant['option'], user_id,)
             )
             mysql.connection.commit()
+            flash(f"successfully dependant added {dependant['Name']}")
 
         except cur.IntegrityError:
             error = "Database error"
             print(error)
 
-<<<<<<< Updated upstream
     return render_template("customer/dependants.html", plans=plans)
-=======
+
 @views.route('customer/Allclaims' , methods =['GET' , 'POST'])
 def claimsCustomer():
      return render_template("customer/ALLclaims.html")
@@ -247,7 +250,6 @@ def Depclaims(id):
         mysql.connection.commit()
 
     return render_template("customer/Depclaims.html", dependant = dependant, hospitals= hospitals)
->>>>>>> Stashed changes
 
 
 @views.route('customer/claims', methods=['GET', 'POST'])
