@@ -243,18 +243,25 @@ def AdminHospitals():
 
 @views.route('edit_status/<string:id>', methods=['POST'])
 def update_status(id):
+    PostStatus(id, '_method')
+    return redirect(url_for('views.adminClaims'))
+
+@views.route('edit_status_dependent/<string:id>', methods=['POST'])
+def update_status_depndent(id):
+    PostStatus(id, '_methoddp')
+    return redirect(url_for('views.adminClaimsDependent'))
+
+def PostStatus(id, nameOfSubmit):
     cursor = mysql.connection.cursor()
 
-    if request.form['_method'] == 'solved':
+    if request.form[nameOfSubmit] == 'resolved':
         sql = f"UPDATE claims SET Status = '1' where claims_Id = '{id}';"
-    if request.form['_method'] == 'resolved':
+    if request.form[nameOfSubmit] == 'unresolved':
         sql = f"UPDATE claims SET Status = '0' where claims_Id = '{id}';"
 
     cursor.execute(sql)
     mysql.connection.commit()
     cursor.close()
-    return redirect(url_for('views.adminClaims'))
-
 
 @views.route('admin/claim_details/<string:id>')
 def claim_details(id):

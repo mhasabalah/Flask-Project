@@ -54,21 +54,21 @@
         <td>{{record[4]}}</td>
         <td>
           {% if record[5] == 1 %}
-          solved
-          {% else %}
           resolved
+          {% else %}
+          unresolved
           {% endif %}
         </td>
         <td>
           <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
             style="display: inline-block;">
-            <input type="hidden" name="_method" value="solved">
-            <input type="submit" value="solved" class="btn btn-success">
+            <input type="hidden" name="_method" value="resolved">
+            <input type="submit" value="resolved" class="btn btn-success">
           </form>
           <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
             style="display: inline-block;">
-            <input type="hidden" name="_method" value="resolved">
-            <input type="submit" value="resolved" class="btn btn-danger">
+            <input type="hidden" name="_method" value="unresolved">
+            <input type="submit" value="unresolved" class="btn btn-danger">
           </form>
         </td>
 

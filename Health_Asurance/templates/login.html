@@ -135,7 +135,7 @@ input{
 ::placeholder{
     color: #e5e5e5;
 }
-button{
+.btn, button{
     margin-top: 20px;
     width: 100%;
     background-color: #ffffff;
@@ -190,10 +190,10 @@ button{
         <label for="username">Username</label>
         <input required="ID is required" name="userId" type="text" placeholder="Your ID" id="username">
 
-        <button>Log In</button>
-        <button><a href="{{url_for('views.register')}}"></a>SignUp</button>
+        <button type="submit">Log In</button>
         
-    </form>
+        <a class="btn" href="{{url_for('views.register')}}">SignUp</a>
+      </form>
 
     </section>
 
