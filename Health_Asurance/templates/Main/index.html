@@ -20,7 +20,7 @@
 <body>
   <section class="showcase">
     <header>
-      <h2 class="logo">Health</h2>
+      <a  style="text-decoration: none;" href="{{url_for('views.home')}}"><h2 class="logo">Health</h2></a>
       <div class="toggle"></div>
     </header>
     <img src="https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
@@ -44,10 +44,10 @@
   </section>
   <div class="menu">
     <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="plans.html">Plans</a></li>
-      <li><a href="#">Hospitals</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="{{url_for('views.home')}}">Home</a></li>
+      <li><a href="{{url_for('views.team')}}">Team</a></li>
+      <li><a href="{{url_for('views.register')}}">Register</a></li>
+      <li><a href="{{url_for('views.login')}}">Login</a></li>
     </ul>
   </div>
 

@@ -17,6 +17,10 @@ views = Blueprint('views', __name__)
 def home():
     return render_template("Main/index.html")
 
+@views.route('/team')
+def team():
+    return render_template("/Team.html")
+
 
 @views.route('/register', methods=['GET', 'POST'])
 def register():
@@ -264,10 +268,12 @@ def claim_details(id):
 @views.route('admin/claim_details_dep/<string:id>')
 def claim_details_dependent(id):
     cursor = mysql.connection.cursor()
-    sql = f'''select claims.claims_Id, dependants.Name as dependent_Name,dependants.RelationShip, dependants.Customer_Id, claims.Cost, 
-            claims.Description, hospitals.Name as Required_Hospital ,claims.Status 
-            from dependants,claims,hospitals 
-            where claims.Dependant_ID = dependants.Dep_ID and claims.hospital_Id = Hospitals.Hospital_Id and claims.claims_Id={id}'''
+    sql = f'''select claims.claims_Id, dependants.Name as dependent_Name
+            ,dependants.RelationShip, dependants.Customer_Id, claims.Cost, 
+            claims.Description, hospitals.Name as Required_Hospital 
+            ,claims.Status from dependants,claims,hospitals 
+            where claims.Dependant_ID = dependants.Dep_ID and 
+            claims.hospital_Id = Hospitals.Hospital_Id and claims.claims_Id={id}'''
     cursor.execute(sql)
     claims = cursor.fetchone()
     print(claims)
