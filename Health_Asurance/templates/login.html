@@ -135,7 +135,7 @@ input{
 ::placeholder{
     color: #e5e5e5;
 }
-.btn, button{
+.coustom button, .btn{
     margin-top: 20px;
     width: 100%;
     background-color: #ffffff;
@@ -177,37 +177,47 @@ input{
 
     <section class="showcase">
       
+
         <header>
-          <div>
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-              <ul class=flashes>
-              {% for message in messages %}
-                <li>{{ message }}</li>
-              {% endfor %}
-              </ul>
-            {% endif %}
-            {% endwith %}
-          </div>
-        
-          <a  style="text-decoration: none;" href="{{url_for('views.home')}}"><h2  class="logo"></h2></a>
+          <a  style="text-decoration: none;" href="{{url_for('views.home')}}"><h2  class="logo">Health</h2></a>
           <div class="toggle"></div>
         </header>
-       
+
     
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form method="post">
-        <h3>Login Here</h3>
-
-        <label for="username">Username</label>
-        <input required="ID is required" name="userId" type="text" placeholder="Your ID" id="username">
-
-        <button type="submit">Log In</button>
-        <a class="btn" href="{{url_for('views.register')}}">SignUp</a>
-      </form>
+    
+      <form method="post">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %} 
+          {% if category == 'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endif %} {% endfor %} {% endif %} {% endwith %}
+          
+          <h3>Login Here</h3>
+  
+          <label for="username">Username</label>
+          <input required="ID is required" name="userId" type="text" placeholder="Your ID" id="username">
+          <div class="coustom">
+            <button type="submit">Log In</button>
+            <a class="btn" href="{{url_for('views.register')}}">SignUp</a>
+          </div>
+        </form>
+    
 
 
     </section>

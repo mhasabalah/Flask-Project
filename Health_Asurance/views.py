@@ -5,9 +5,7 @@ from flask import Blueprint, render_template, request, flash, session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
-import functools
 from datetime import date
-from collections import Counter
 views = Blueprint('views', __name__)
 
 ##### Customer #####
@@ -43,7 +41,7 @@ def register():
                 flash(f'You were successfully registered in and your CODE is {customerID[0]}')
                 return redirect(url_for('views.login'))
         
-        flash(error)
+        flash(error, category='error')
 
     return render_template("register.html")
 
@@ -69,7 +67,7 @@ def login():
             session['user_id'] = user[0]
             return redirect(url_for('views.profile'))
 
-        flash(error)
+        flash(error, category='error')
 
     return render_template("login.html")
 
@@ -336,7 +334,6 @@ def AdminHospitals():
         mysql.connection.commit()
         cursor.close()
         flash(f'{name} is added successfully.')
-     
     return render_template("admin/hospitals.html" , plans = plans)
 
 
