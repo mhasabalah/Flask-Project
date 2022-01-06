@@ -16,10 +16,13 @@ def create_app():
 
     #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
-
     app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
+<<<<<<< Updated upstream
     app.config['MYSQL_PASSWORD'] = 'Moh1425'
+=======
+    app.config['MYSQL_PASSWORD'] ='Phud8asp'
+>>>>>>> Stashed changes
     app.config['MYSQL_DB'] = 'health_insurance'
 
     mysql = MySQL(app)

@@ -29,8 +29,9 @@
   align-items: center;
   height: inherit;
   padding: 20px;
-  padding-top: 728px;
+  padding-top: 608px;
   }
+  
   form {
   width: 50%;
   padding: 20px;
@@ -183,7 +184,7 @@
 
 {% block content %}
           <div class="testbox">
-            <form action="#" methods =["Post"]>
+            <form action="#" method="post">
               <div class="banner">
                </div>
               <br/>
@@ -194,56 +195,29 @@
                   <input id="fname" type="text" name="CustomerName" required/>
                 </div>
                 <div class="item">
-                  <label for="lname">Required Hospital<span>*</span></label>
-                  <input id="lname" type="text" name="RequiredHopsital" required/>
-                </div>
-                <div class="item">
                   <label for="initial">Expected Cost<span>*</span></label>
                   <input id="initial" type="number" name="ExpectedCost" required/>
                 </div>
+
                 <div class="item">
-                  <label for="phone">National Id<span>*</span></label>
-                  <input id="phone" type="text" name="CustomerID" required/>
+                  <label for="lname">Required Hospital<span>*</span></label>
+                  <select name="hospital" class="form-select" aria-label="select Benefit Plan">
+                    <option selected>select Hospital </option>
+                    {% for hospital in hospitals %}
+                    <option name ="{{hospital[0]}}" value="{{hospital[0]}}">{{hospital[1]}}</option>
+                    {%endfor%}
+                  </select>
                 </div>
+
                 <div class="item">
                   <label for="phone">Phone<span>*</span></label>
                   <input id="phone" type="text"   name="phone" required/>
-                </div>
-                   <div class="question">
-                  <label>Do you need a physical meeting to consider your file</label>
-                  <div class="question-answer">
-                    <div>
-                      <input type="radio" value="none" id="radio_1" name="visit"/>
-                      <label for="radio_1" class="radio"><span>Yes</span></label>
-                    </div>
-                    <div>
-                      <input  type="radio" value="none" id="radio_2" name="visit"/>
-                      <label for="radio_2" class="radio"><span>No</span></label>
-                    </div>
-                    <label>TIs Dependant ? if yes please enter your dependant name </label>
-                    <div class="question-answer">
-                      <div>
-                        <input type="radio" value="none" id="radio_1" name="visit"/>
-                        <label for="radio_1" class="radio"><span>Yes</span></label>
-                      </div>
-                      <div>
-                        <input  type="radio" value="none" id="radio_2" name="visit"/>
-                        <label for="radio_2" class="radio"><span>No</span></label>
-                      </div>
-                      <div class="item">
-                        <label for="phone">Dependant Name<span>*</span></label>
-                        <input id="phone" type="text" name="DependantName" />
-                      </div>
-                      <div class="item">
-                        <label for="phone">National Id<span>*</span></label>
-                        <input id="phone" type="text" name="DependantID" />
-                      </div>
-                      <div class="item">
-                        <label for="phone">Describe the case<span>*</span></label>
-                        <input id="phone" type="text" name="Description" required/>
-                      </div>
-                  </div>
-                </div>
+                </div>  
+                <div class="item">
+                  <label for="phone">Describe the case<span>*</span></label>
+                  <input id="phone" type="text" name="Description" required/>
+                </div>   
+
               </fieldset>
               <br/>
               <fieldset>

@@ -35,12 +35,17 @@ def register():
                 cur.execute("select Customer_Id from customers where Customer_Name=%s and PhoneNumber= %s;",
                             (user['name'], user['PhoneNumber']))
                 customerID = cur.fetchone()
+<<<<<<< Updated upstream
                 flash(
                     'You were successfully registered in and your CODE is {{customerID}}')
+=======
+                
+>>>>>>> Stashed changes
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
                 print(error)
             else:
+                flash(f'You were successfully registered in and your CODE is {customerID[0]}')
                 return redirect(url_for('views.login'))
         flash(error)
 
@@ -146,6 +151,29 @@ def plans():
 
     return render_template("customer/PurchasedPlans.html")
 
+<<<<<<< Updated upstream
+=======
+@views.route('/customer/benefitPlan', methods=['GET', 'POST'])
+def benefit():
+    user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s'
+         , (user_id,)
+    )
+    plans = cur.fetchall()
+    if request.method == "POST":
+        plan = request.form
+        print(plan['option'])
+
+        cur.execute(
+            'update customers set customers.Beneficiary_Plan =%s where customers.Customer_Id=%s;',
+            (plan['option'],user_id)
+        )
+        mysql.connection.commit()
+
+    return render_template("customer/selectPlan.html", plans = plans)
+>>>>>>> Stashed changes
 
 @views.route('customer/dependants', methods=['GET', 'POST'])
 def dependants():
@@ -171,26 +199,75 @@ def dependants():
             error = "Database error"
             print(error)
 
+<<<<<<< Updated upstream
     return render_template("customer/dependants.html", plans=plans)
+=======
+@views.route('customer/Allclaims' , methods =['GET' , 'POST'])
+def claimsCustomer():
+     return render_template("customer/ALLclaims.html")
+
+@views.route('customer/DepName' , methods =['GET' , 'POST'])
+def claimsDepName():
+    user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'select dependants.Name, dependants.Dep_ID from customers,dependants where customers.Customer_Id =%s and dependants.Customer_Id = customers.Customer_Id', (
+            user_id,)
+        )
+    dependants = cur.fetchall()
+    print(dependants)
+    if request.method == 'POST':
+        dependantID = request.form['dependent']
+        print(dependantID)
+        return redirect(url_for('views.Depclaims', id = dependantID))
+    return render_template("customer/claimDepName.html",dependants = dependants)
+
+@views.route('customer/depclaims/<string:id>' , methods =['GET' , 'POST'],)
+def Depclaims(id):
+    user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'select dependants.Name from dependants where dependants.Dep_ID =%s', (
+            id,)
+        )
+    dependant = cur.fetchall()
+    print(dependant)
+    
+    cur.execute(
+        f'select test.Hospital_id, hospitals.Name from( SELECT dependants.Beneficiary_Plan, `purchasd plans`.Plan_Id, enrolled.Hospital_id from dependants,`purchasd plans`, enrolled where Beneficiary_Plan = `purchasd plans`.PurchasedPlanID and `purchasd plans`.Plan_Id = enrolled.Plan_Id and dependants.Dep_ID = {id}) as test, hospitals where test.Hospital_id = hospitals.Hospital_id;'
+    )
+    hospitals = cur.fetchall()
+    print(hospitals)
+
+    if request.method == 'POST':
+        claim = request.form
+        cur.execute(
+            f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID , Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{id}', '{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
+        )
+        mysql.connection.commit()
+
+    return render_template("customer/Depclaims.html", dependant = dependant, hospitals= hospitals)
+>>>>>>> Stashed changes
 
 
 @views.route('customer/claims', methods=['GET', 'POST'])
 def claims():
+    user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        f'select test.Hospital_id, hospitals.Name from(SELECT customers.Beneficiary_Plan, `purchasd plans`.Plan_Id, enrolled.Hospital_id from customers,`purchasd plans`, enrolled where Beneficiary_Plan = `purchasd plans`.PurchasedPlanID and `purchasd plans`.Plan_Id = enrolled.Plan_Id and customers.Customer_Id = {user_id}) as test, hospitals where test.Hospital_id = hospitals.Hospital_id;'
+    )
+    hospitals = cur.fetchall()
     if request.method == 'POST':
-        Customer_Id = request.form["CustomerId"]
-        Dependant_ID = request.form["DependantID"]
-        Cost = request.form["ExpectedCost"]
-        Description = request.form["Description"]
-        Hospital_name = request.form["RequiredHopsital"]
-        cursor = mysql.connection.cursor()
-        Hospital_id = f"select hospitals.Hospital_id from hospitals where hospitals.Name ='{Hospital_name}'"
-        sql = f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID, Cost ,ddescription , Hospital_id ) VALUES ('{Customer_Id}','{Dependant_ID}' ,'{Cost}', '{Description}' ,'{Hospital_id}');"
-        cursor.execute(Hospital_id)
-        cursor.execute(sql)
+        claim = request.form
+        print(claim)
+        cur = mysql.connection.cursor()
+        cur.execute(
+            f"INSERT INTO health_insurance.claims (Customer_id, Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
+        )
         mysql.connection.commit()
-        cursor.close()
-        return f"Done!!"
-    return render_template("customer/claims.html")
+
+    return render_template("customer/claims.html" , hospitals = hospitals)
 
 ##### Admin #####
 
@@ -226,19 +303,36 @@ def AdminPlans():
 
 @views.route('admin/hospitals', methods=['GET', 'POST'])
 def AdminHospitals():
+    cursor = mysql.connection.cursor()
+    sql = "select * from health_insurance.plans"
+    cursor.execute(sql)
+    plans = cursor.fetchall()
+     
     if request.method == 'POST':
         name = request.form["name"]
         city = request.form["city"]
         street = request.form["street"]
         phone = request.form["phone"]
-
+        plan = request.form["plantype"]
+ 
         cursor = mysql.connection.cursor()
         sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
+         
         cursor.execute(sql)
+        mysql.connection.commit()
+
+        cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",
+                             (name,phone))
+        hospitalID = cursor.fetchone()
+
+        cursor.execute(
+            f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan}');"
+        )
         mysql.connection.commit()
         cursor.close()
         return f"Done!!"
-    return render_template("admin/hospitals.html")
+     
+    return render_template("admin/hospitals.html" , plans = plans)
 
 
 @views.route('edit_status/<string:id>', methods=['POST'])
