@@ -26,17 +26,17 @@
     </div>
     <br />
 
-    <div class="form-row">
-      <div class="form-group col-md-2 control">
+    
+      <div class="form-group">
           <label for="RelationShip">plan</label>
-          <select name="plantype" class="form-select" aria-label="select Plan">
+          <select name="plantype" class="form-select form-control" aria-label="select Plan">
               <option selected>select Plan</option>
               {% for plan in plans %}
               <option name ="{{plan[0]}}" value="{{plan[0]}}">{{plan[1]}}</option>
               {%endfor%}
           </select>
       </div>
-      </div>
+      
 
     <button type="submit" class="btn btn-primary">Create</button>
   </form>
