@@ -5,15 +5,6 @@
 
 <body>
 <section class="container">
-	{% with messages = get_flashed_messages() %}
-	{% if messages %}
-		<ul class=flashes>
-		{% for message in messages %}
-		<li style="font-family:'Poppins', sans-serif; color:black; font:bolder;">{{ message }}</li>
-		{% endfor %}
-		</ul>
-	{% endif %}
-	{% endwith %} 
 <div class=" col-lg-10 mx-auto form p-4">
 <form method="post" action="">
   <div class="row-white ">

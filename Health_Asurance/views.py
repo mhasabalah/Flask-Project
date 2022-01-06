@@ -131,7 +131,7 @@ def plans():
                     user_id, 1)
             )
             mysql.connection.commit()
-            flash(f'You have successfully bought A basic plan')
+            flash('You have successfully bought A basic plan')
 
         elif request.form['submit_button'] == 'premuim':
             cur = mysql.connection.cursor()
@@ -140,7 +140,7 @@ def plans():
                     user_id, 2)
             )
             mysql.connection.commit()
-            flash(f'You have successfully bought A premuim plan')
+            flash('You have successfully bought A premuim plan')
 
         elif request.form['submit_button'] == 'gold':
             cur = mysql.connection.cursor()
@@ -149,7 +149,7 @@ def plans():
                     user_id, 3)
             )
             mysql.connection.commit()
-            flash(f'You have successfully bought A Golden plan')
+            flash('You have successfully bought A Golden plan')
 
     return render_template("customer/PurchasedPlans.html")
 
@@ -280,7 +280,9 @@ def adminProfile():
 @views.route('admin/customer', methods=['GET'])
 def AdminCustomer():
     cursor = mysql.connection.cursor()
-    sql = "select * from health_insurance.customers;"
+    sql = '''select customers.*, Type  from customers , plans, `purchasd plans`
+            where customers.Beneficiary_Plan = `purchasd plans`.PurchasedPlanID 
+            and `purchasd plans`.Plan_Id = plans.Plan_Id;'''
     cursor.execute(sql)
     customers = cursor.fetchall()
     return render_template("admin/customer.html", customers=customers)
