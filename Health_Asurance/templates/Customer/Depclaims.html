@@ -31,7 +31,6 @@
   padding: 20px;
   padding-top: 608px;
   }
-  
   form {
   width: 50%;
   padding: 20px;
@@ -189,11 +188,13 @@
                </div>
               <br/>
               <fieldset>
-                <legend>Customer Information</legend>
+                <legend>Dependants Information</legend>
+             
                 <div class="item">
                   <label for="fname"> Full Name<span>*</span></label>
-                  <input id="fname" type="text" name="CustomerName" required/>
+                  <input id="fname" type="text" name="CustomerName" placeholder="{{dependant[0][0]}}" disabled/>
                 </div>
+                  
                 <div class="item">
                   <label for="initial">Expected Cost<span>*</span></label>
                   <input id="initial" type="number" name="ExpectedCost" required/>
@@ -202,7 +203,7 @@
                 <div class="item">
                   <label for="lname">Required Hospital<span>*</span></label>
                   <select name="hospital" class="form-select" aria-label="select Benefit Plan">
-                    <option selected>select Hospital </option>
+                    <option selected>select Hospital</option>
                     {% for hospital in hospitals %}
                     <option name ="{{hospital[0]}}" value="{{hospital[0]}}">{{hospital[1]}}</option>
                     {%endfor%}
