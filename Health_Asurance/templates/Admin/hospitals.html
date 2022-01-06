@@ -1,36 +1,30 @@
-{% extends "NavBar/adminNavbar.html" %}
-{% block title %}Hospitals{% endblock %}
-
+{% extends "NavBar/adminNavbar.html" %} {% block title %}Hospitals{% endblock %}
 {% block content %}
 
 <h1>hospitals</h1>
 
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
-
   <form method="POST">
-    <div class="form-row">
-      <div class="form-group ">
-        <label for="inputname">Name</label>
-        <input name="name" type="text" class="form-control" id="inputname" placeholder="Name">
-      </div>
+    <div class="form-group">
+      <label for="inputname">Name</label>
+      <input name="name" type="text" class="form-control" id="inputname" placeholder="Name" />
     </div>
 
-    <div class="form-row">
-      <div class="form-group ">
-        <label for="inputCity">City</label>
-        <input name="city" type="text" class="form-control" id="inputCity" placeholder="City">
-      </div>
+    <div class="form-group">
+      <label for="inputCity">City</label>
+      <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" />
     </div>
 
-    <div class="form-group ">
+    <div class="form-group">
       <label for="inputStreet">Street</label>
-      <input name="street" type="text" class="form-control" id="inputStreet" placeholder="1234 Main St">
+      <input name="street" type="text" class="form-control" id="inputStreet" placeholder="1234 Main St" />
     </div>
 
-    <div class="form-group ">
+    <div class="form-group">
       <label for="Phone">Phone</label>
-      <input name="phone" type="tel" class="form-control" id="inputPhone" placeholder="01-- --- ---">
-    </div><br>
+      <input name="phone" type="tel" class="form-control" id="inputPhone" placeholder="01-- --- ---" />
+    </div>
+    <br />
 
     <button type="submit" class="btn btn-primary">Create</button>
   </form>

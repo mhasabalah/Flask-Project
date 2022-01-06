@@ -18,13 +18,15 @@
     </a>
   
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
         <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
     </div>
   </div>
   <form  class="p-2" method="POST">
-    <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
-    <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
+      <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
+      <a class="btn btn-secondary" href="{{url_for('views.adminClaimsDependent')}}">All</a>
+    </div>
   </form>
 </div>
 
@@ -52,9 +54,9 @@
         <td>{{record[6]}}</td>
         <td>
           {% if record[7] == 1 %}
-          resolved
+          <p style="color: rgb(19, 136, 72);">resolved</p>
           {% else %}
-          unresolved
+          <p style="color: rgb(224, 77, 77);">unresolved</p>
           {% endif %}
         </td>
         <td>
