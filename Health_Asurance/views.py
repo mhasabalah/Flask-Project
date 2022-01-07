@@ -119,34 +119,29 @@ def hospitals():
 @views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
     user_id = session.get('user_id')
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'select * from plans'
+    )
+    plans = cur.fetchall()
+
     if request.method == 'POST':
-        if request.form['submit_button'] == 'basic':
-            cur = mysql.connection.cursor()
-            cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
-                    user_id, 1)
-            )
-            mysql.connection.commit()
-            flash('You have successfully bought A basic plan')
-
-        elif request.form['submit_button'] == 'premuim':
-            cur = mysql.connection.cursor()
-            cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
-                    user_id, 2)
-            )
-            mysql.connection.commit()
-            flash('You have successfully bought A premuim plan')
-
-        elif request.form['submit_button'] == 'gold':
-            cur = mysql.connection.cursor()
-            cur.execute(
-                'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
-                    user_id, 3)
-            )
-            mysql.connection.commit()
-            flash('You have successfully bought A Golden plan')
-    return render_template("customer/PurchasedPlans.html")
+        plan = request.form
+        print(plan)
+        planID = int (plan['plan'])
+        cur.execute(
+            'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
+                user_id, planID)
+        )
+        mysql.connection.commit()
+        cur.execute(
+            'select Type from plans where Plan_Id = %s', (
+                 planID,)
+        )
+        type = cur.fetchone()
+        flash(f"You have successfully bought A {type[0]} plan")
+        
+    return render_template("customer/PurchasedPlans.html", plans=plans)
 
 
 @views.route('/customer/benefitPlan', methods=['GET', 'POST'])
