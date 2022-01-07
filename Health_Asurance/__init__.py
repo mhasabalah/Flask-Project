@@ -14,13 +14,10 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='dev'
 
-    #DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
     app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
-
-    app.config['MYSQL_PASSWORD'] ='Phud8asp'
-
+    app.config['MYSQL_PASSWORD'] =''
     app.config['MYSQL_DB'] = 'health_insurance'
 
     mysql = MySQL(app)
