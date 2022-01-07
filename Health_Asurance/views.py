@@ -7,10 +7,10 @@ from datetime import date
 views = Blueprint('views', __name__)
 
 ##### Customer #####
-
 @views.route('/')
 def home():
     return render_template("Main/index.html")
+
 
 @views.route('/team')
 def team():
@@ -30,14 +30,15 @@ def register():
                 cur.execute("select Customer_Id from customers where Customer_Name=%s and PhoneNumber= %s;",
                             (user['name'], user['PhoneNumber']))
                 customerID = cur.fetchone()
-                
+
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
                 print(error)
             else:
-                flash(f'You were successfully registered in and your CODE is {customerID[0]}')
+                flash(
+                    f'You were successfully registered in and your CODE is {customerID[0]}')
                 return redirect(url_for('views.login'))
-        
+
         flash(error, category='error')
 
     return render_template("register.html")
@@ -103,7 +104,7 @@ def profile():
         for item in plan:
             if (item in plans):
                 plans[item] += 1
-            else :
+            else:
                 plans[item] = 1
     return render_template("customer/profile.html", users=user, age=age, dependents=dependents, plans=plans)
 
@@ -118,6 +119,7 @@ def hospitals():
     hospitals = cursor.fetchall()
     print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
+
 
 @views.route('customer/plans', methods=['GET', 'POST'])
 def plans():
@@ -151,13 +153,14 @@ def plans():
             flash('You have successfully bought A Golden plan')
     return render_template("customer/PurchasedPlans.html")
 
+
 @views.route('/customer/benefitPlan', methods=['GET', 'POST'])
 def benefit():
     user_id = session.get('user_id')
     cur = mysql.connection.cursor()
     cur.execute(
-        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s'
-         , (user_id,)
+        'select `purchasd plans`.PurchasedPlanID, plans.Type from `purchasd plans`,plans,customers where `purchasd plans`.plan_Id = plans.plan_Id and customers.Customer_Id = `purchasd plans`.Customer_Id and customers.Customer_Id=%s', (
+            user_id,)
     )
     plans = cur.fetchall()
     if request.method == "POST":
@@ -166,12 +169,13 @@ def benefit():
 
         cur.execute(
             'update customers set customers.Beneficiary_Plan =%s where customers.Customer_Id=%s;',
-            (plan['option'],user_id)
+            (plan['option'], user_id)
         )
         mysql.connection.commit()
-        flash(f"successfully choosed {plan['option']} as your Beneficiary plan")
+        flash(
+            f"successfully choosed {plan['option']} as your Beneficiary plan")
 
-    return render_template("customer/selectPlan.html", plans = plans)
+    return render_template("customer/selectPlan.html", plans=plans)
 
 
 @views.route('customer/dependants', methods=['GET', 'POST'])
@@ -201,39 +205,42 @@ def dependants():
 
     return render_template("customer/dependants.html", plans=plans)
 
-@views.route('customer/Allclaims' , methods =['GET' , 'POST'])
-def claimsCustomer():
-     return render_template("customer/ALLclaims.html")
 
-@views.route('customer/DepName' , methods =['GET' , 'POST'])
+@views.route('customer/Allclaims', methods=['GET', 'POST'])
+def claimsCustomer():
+    return render_template("customer/ALLclaims.html")
+
+
+@views.route('customer/DepName', methods=['GET', 'POST'])
 def claimsDepName():
     user_id = session.get('user_id')
     cur = mysql.connection.cursor()
     cur.execute(
         'select dependants.Name, dependants.Dep_ID from customers,dependants where customers.Customer_Id =%s and dependants.Customer_Id = customers.Customer_Id', (
             user_id,)
-        )
+    )
     dependants = cur.fetchall()
     print(dependants)
     if request.method == 'POST':
         dependantID = request.form['dependent']
         print(dependantID)
-        
-        return redirect(url_for('views.Depclaims', id = dependantID))
-        
-    return render_template("customer/claimDepName.html",dependants = dependants)
 
-@views.route('customer/depclaims/<string:id>' , methods =['GET' , 'POST'],)
+        return redirect(url_for('views.Depclaims', id=dependantID))
+
+    return render_template("customer/claimDepName.html", dependants=dependants)
+
+
+@views.route('customer/depclaims/<string:id>', methods=['GET', 'POST'],)
 def Depclaims(id):
     user_id = session.get('user_id')
     cur = mysql.connection.cursor()
     cur.execute(
         'select dependants.Name from dependants where dependants.Dep_ID =%s', (
             id,)
-        )
+    )
     dependant = cur.fetchall()
     print(dependant)
-    
+
     cur.execute(
         f'select test.Hospital_id, hospitals.Name from( SELECT dependants.Beneficiary_Plan, `purchasd plans`.Plan_Id, enrolled.Hospital_id from dependants,`purchasd plans`, enrolled where Beneficiary_Plan = `purchasd plans`.PurchasedPlanID and `purchasd plans`.Plan_Id = enrolled.Plan_Id and dependants.Dep_ID = {id}) as test, hospitals where test.Hospital_id = hospitals.Hospital_id;'
     )
@@ -248,7 +255,7 @@ def Depclaims(id):
         mysql.connection.commit()
         flash('You have filed claim successfully')
 
-    return render_template("customer/Depclaims.html", dependant = dependant, hospitals= hospitals)
+    return render_template("customer/Depclaims.html", dependant=dependant, hospitals=hospitals)
 
 
 @views.route('customer/claims', methods=['GET', 'POST'])
@@ -268,7 +275,7 @@ def claims():
         )
         mysql.connection.commit()
         flash('You have filed claim successfully')
-    return render_template("customer/claims.html" , hospitals = hospitals)
+    return render_template("customer/claims.html", hospitals=hospitals)
 
 ##### Admin #####
 
@@ -303,9 +310,9 @@ def AdminPlans():
             cursor.close()
             flash(f'{planType} is added successfully.')
     except cursor.IntegrityError:
-            error = f"Plan of {planType} is already found."
-           
-            flash(error, category='error')
+        error = f"Plan of {planType} is already found."
+
+        flash(error, category='error')
     return render_template("admin/plans.html")
 
 
@@ -322,24 +329,20 @@ def AdminHospitals():
             city = request.form["city"]
             street = request.form["street"]
             phone = request.form["phone"]
-
             plan = request.form.getlist("plantype")
-    
-
-            print(plan)
 
             cursor = mysql.connection.cursor()
-            
             sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
-            
             cursor.execute(sql)
             mysql.connection.commit()
 
-            cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",(name,phone))
+            cursor.execute(
+                "select Hospital_id from hospitals where Name=%s and Phone= %s;", (name, phone))
             hospitalID = cursor.fetchone()
-            
+
             for i in range(len(plan)):
-                cursor.execute(f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan[i]}');")
+                cursor.execute(
+                    f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan[i]}');")
             mysql.connection.commit()
             cursor.close()
             flash(f'{name} is added successfully.')
@@ -347,7 +350,7 @@ def AdminHospitals():
     except cursor.IntegrityError:
         error = f"Hospital {name} is already exist."
         flash(error, category='error')
-    return render_template("admin/hospitals.html" , plans = plans)
+    return render_template("admin/hospitals.html", plans=plans)
 
 
 @views.route('edit_status/<string:id>', methods=['POST'])
@@ -355,10 +358,12 @@ def update_status(id):
     PostStatus(id, '_method')
     return redirect(url_for('views.adminClaims'))
 
+
 @views.route('edit_status_dependent/<string:id>', methods=['POST'])
 def update_status_depndent(id):
     PostStatus(id, '_methoddp')
     return redirect(url_for('views.adminClaimsDependent'))
+
 
 def PostStatus(id, nameOfSubmit):
     cursor = mysql.connection.cursor()
@@ -371,6 +376,7 @@ def PostStatus(id, nameOfSubmit):
     cursor.execute(sql)
     mysql.connection.commit()
     cursor.close()
+
 
 @views.route('admin/claim_details/<string:id>')
 def claim_details(id):
@@ -392,7 +398,6 @@ def claim_details_dependent(id):
             claims.hospital_Id = Hospitals.Hospital_Id and claims.claims_Id={id}'''
     cursor.execute(sql)
     claims = cursor.fetchone()
-    print(claims)
     return render_template("admin/ClaimsDetailsDep.html", Claims=claims)
 
 
@@ -426,7 +431,6 @@ def AdminClaimsDependentSql():
     cursor.execute(sql)
 
     claims = cursor.fetchall()
-    print(claims)
     return claims
 
 
@@ -449,8 +453,3 @@ def AdminClaimsSql():
     cursor.execute(sql)
     claims = cursor.fetchall()
     return claims
-
-
-
-
-
