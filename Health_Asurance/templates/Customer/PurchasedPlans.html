@@ -11,23 +11,23 @@
 	<div class="block">
 		{% for plan in plans %}
 		<div class="col-xs-12 col-sm-6 col-md-3">
-				<ul class="pricing p-green">
-					<li>
-						<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
-						<big>{{plan[1]}}</big>
-					</li>
-					<li>Plan ID:{{plan[0]}}</li>
-					<li>Partial Cover</li>
-					<li>Does not Include Surgeries</li>
-					<li>Cover Dependants</li>
-					<li>
-						<h3>{{plan[2]}}</h3>
-						<span>per month</span>
-					</li>
-					<li>
-						<button type="submit" name="plan" value="{{plan[0]}}">Join Now</button>
-					</li>
-				</ul>
+			<ul class="pricing p-green{{plan[1]}}">
+				<li>
+					<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
+					<big>{{plan[1]}}</big>
+				</li>
+				<li>Plan ID:{{plan[0]}}</li>
+				<li>Partial Cover</li>
+				<li>Does not Include Surgeries</li>
+				<li>Cover Dependants</li>
+				<li>
+					<h3>{{plan[2]}}</h3>
+					<span>per month</span>
+				</li>
+				<li>
+					<button type="submit" name="plan" value="{{plan[0]}}">Join Now</button>
+				</li>
+			</ul>
 		</div>
 		{%endfor%}
 

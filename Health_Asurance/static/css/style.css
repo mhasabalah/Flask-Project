@@ -7,7 +7,7 @@ body {
   font-weight: 300;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   position: relative;
 }
 
@@ -76,25 +76,25 @@ body {
 	box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.1);
 }
 /* pricing color */
-.p-green big,
-.p-green h3 {
+.p-greenBasic big,
+.p-greenBasic h3 {
 	color: #4c7737;
 }
-.p-green button {
+.p-greenBasic button {
 	background: #4c7737;
 }
-.p-yel big,
-.p-yel h3 {
+.p-greenPremuim big,
+.p-greenPremuim h3 {
 	color: #ffbb42;
 }
-.p-yel button {
+.p-greenPremuim button {
 	background: #ffbb42;
 }
-.p-red big,
-.p-red h3 {
+.p-green3 big,
+.p-green3 {
 	color: #e13c4c;
 }
-.p-red button {
+.p-green3 button {
 	background: #e13c4c;
 }
 .p-blue big,
