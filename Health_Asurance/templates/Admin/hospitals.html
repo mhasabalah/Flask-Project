@@ -1,18 +1,40 @@
 {% extends "NavBar/adminNavbar.html" %} {% block title %}Hospitals{% endblock %}
 {% block content %}
 
+{% block style %}
+<style>
+  select:invalid {
+    height: 0px !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    display: flex !important;
+}
+
+select:invalid[multiple] {
+    margin-top: 15px !important;
+}
+
+
+.chosen-container.chosen-container-multi {
+  width: 100% !important; /* or any value that fits your needs */
+}
+
+
+</style>
+{% endblock %}
+
 <h1>hospitals</h1>
 
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
   <form method="POST">
     <div class="form-group">
       <label for="inputname">Name</label>
-      <input name="name" type="text" class="form-control" id="inputname" placeholder="Name" />
+      <input name="name" type="text" class="form-control" id="inputname" required="Name is required" placeholder="Name" />
     </div>
 
     <div class="form-group">
       <label for="inputCity">City</label>
-      <input name="city" type="text" class="form-control" id="inputCity" placeholder="City" />
+      <input name="city" type="text" class="form-control" id="inputCity" required="City is required" placeholder="City" />
     </div>
 
     <div class="form-group">
@@ -22,14 +44,14 @@
 
     <div class="form-group">
       <label for="Phone">Phone</label>
-      <input name="phone" type="tel" class="form-control" id="inputPhone" placeholder="01-- --- ---" />
+      <input name="phone" type="tel" class="form-control" id="inputPhone" required="Phone is required" placeholder="01-- --- ---" />
     </div>
     <br />
 
     
       <div class="form-group">
           <label for="RelationShip">plan</label>
-          <select data-placeholder="Begin typing a name to filter..." multiple class="chosen-select form-control" name="plantype">
+          <select required="required" data-placeholder="Begin typing a name to filter..." multiple class="chosen-select form-group" name="plantype">
             <option value=""></option>
             {% for plan in plans %}
               <option name ="{{plan[0]}}" value="{{plan[0]}}">{{plan[1]}}</option>

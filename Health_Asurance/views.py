@@ -281,9 +281,9 @@ def adminProfile():
 @views.route('admin/customer', methods=['GET'])
 def AdminCustomer():
     cursor = mysql.connection.cursor()
-    sql = '''select customers.*, Type  from customers , plans, `purchasd plans`
-            where customers.Beneficiary_Plan = `purchasd plans`.PurchasedPlanID 
-            and `purchasd plans`.Plan_Id = plans.Plan_Id;'''
+    sql = '''select customers.* , Type from customers left outer join `purchasd plans`
+            on customers.Beneficiary_Plan = `purchasd plans`.PurchasedPlanID 
+            left join plans on `purchasd plans`.Plan_Id = plans.Plan_Id;'''
     cursor.execute(sql)
     customers = cursor.fetchall()
     return render_template("admin/customer.html", customers=customers)
@@ -326,6 +326,7 @@ def AdminHospitals():
 
             cursor = mysql.connection.cursor()
             sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
+            
             cursor.execute(sql)
             mysql.connection.commit()
 
