@@ -26,7 +26,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %} {% for category, message in messages %} 
   {% if category == 'error' %}
-  <div class="alert alert-danger alter-dismissable fade show" role="alert">
+  <div class="alert alert-danger alter-dismissable fade show"  role="alert">
     {{ message }}
     <button type="button" class="close" data-dismiss="alert">
       <span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
           </a>
           <a href="/customer/benefitPlan" class="nav_link">
             <i class="bx bx-credit-card-front nav_icon"></i>
-            <span class="nav_name">Add Dependant</span>
+            <span class="nav_name">Add Beneficiary Plan</span>
           </a>
         </div>
       </div>
