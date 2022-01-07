@@ -151,13 +151,7 @@ def plans():
                     user_id, 3)
             )
             mysql.connection.commit()
-<<<<<<< Updated upstream
             flash('You have successfully bought A Golden plan')
-
-=======
-            flash(f'You have successfully bought A Golden plan')
-    
->>>>>>> Stashed changes
     return render_template("customer/PurchasedPlans.html")
 
 @views.route('/customer/benefitPlan', methods=['GET', 'POST'])
@@ -227,7 +221,9 @@ def claimsDepName():
     if request.method == 'POST':
         dependantID = request.form['dependent']
         print(dependantID)
+        
         return redirect(url_for('views.Depclaims', id = dependantID))
+        
     return render_template("customer/claimDepName.html",dependants = dependants)
 
 @views.route('customer/depclaims/<string:id>' , methods =['GET' , 'POST'],)
@@ -253,6 +249,7 @@ def Depclaims(id):
             f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID , Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{id}', '{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
         )
         mysql.connection.commit()
+        flash('You have filed claim successfully')
 
     return render_template("customer/Depclaims.html", dependant = dependant, hospitals= hospitals)
 
@@ -273,7 +270,7 @@ def claims():
             f"INSERT INTO health_insurance.claims (Customer_id, Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
         )
         mysql.connection.commit()
-
+        flash('You have filed claim successfully')
     return render_template("customer/claims.html" , hospitals = hospitals)
 
 ##### Admin #####
@@ -297,59 +294,62 @@ def AdminCustomer():
 
 @views.route('admin/plans', methods=['GET', 'POST'])
 def AdminPlans():
-    if request.method == 'POST':
-        planType = request.form["type"]
-        price = request.form["price"]
+    try:
+        if request.method == 'POST':
+            planType = request.form["type"]
+            price = request.form["price"]
 
-        cursor = mysql.connection.cursor()
-        sql = f"INSERT INTO health_insurance.plans (Type, Price) VALUES ('{planType}','{price}');"
-        cursor.execute(sql)
-        mysql.connection.commit()
-        cursor.close()
-
-        flash(f'{planType} is added successfully.')
-
+            cursor = mysql.connection.cursor()
+            sql = f"INSERT INTO health_insurance.plans (Type, Price) VALUES ('{planType}','{price}');"
+            cursor.execute(sql)
+            mysql.connection.commit()
+            cursor.close()
+            flash(f'{planType} is added successfully.')
+    except cursor.IntegrityError:
+            error = f"Plan of {planType} is already found."
+           
+            flash(error, category='error')
     return render_template("admin/plans.html")
 
 
 @views.route('admin/hospitals', methods=['GET', 'POST'])
 def AdminHospitals():
-    cursor = mysql.connection.cursor()
-    sql = "select * from health_insurance.plans"
-    cursor.execute(sql)
-    plans = cursor.fetchall()
-
-    if request.method == 'POST':
-        name = request.form["name"]
-        city = request.form["city"]
-        street = request.form["street"]
-        phone = request.form["phone"]
-<<<<<<< Updated upstream
-        plan = request.form.getlist("plantype")
- 
-
-        print(plan)
-=======
-        plan = request.form["plantype"]
-      
-
-        
->>>>>>> Stashed changes
+    try:
         cursor = mysql.connection.cursor()
-        
-        sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
-         
+        sql = "select * from health_insurance.plans"
         cursor.execute(sql)
-        mysql.connection.commit()
+        plans = cursor.fetchall()
 
-        cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",(name,phone))
-        hospitalID = cursor.fetchone()
-        
-        for i in range(len(plan)):
-            cursor.execute(f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan[i]}');")
-        mysql.connection.commit()
-        cursor.close()
-        flash(f'{name} is added successfully.')
+        if request.method == 'POST':
+            name = request.form["name"]
+            city = request.form["city"]
+            street = request.form["street"]
+            phone = request.form["phone"]
+
+            plan = request.form.getlist("plantype")
+    
+
+            print(plan)
+
+            cursor = mysql.connection.cursor()
+            
+            sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
+            
+            cursor.execute(sql)
+            mysql.connection.commit()
+
+            cursor.execute("select Hospital_id from hospitals where Name=%s and Phone= %s;",(name,phone))
+            hospitalID = cursor.fetchone()
+            
+            for i in range(len(plan)):
+                cursor.execute(f"INSERT INTO enrolled (Hospital_id, Plan_Id) VALUES ('{hospitalID[0]}','{plan[i]}');")
+            mysql.connection.commit()
+            cursor.close()
+            flash(f'{name} is added successfully.')
+
+    except cursor.IntegrityError:
+        error = f"Hospital {name} is already exist."
+        flash(error, category='error')
     return render_template("admin/hospitals.html" , plans = plans)
 
 
