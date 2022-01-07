@@ -1,7 +1,5 @@
 from os import name
-
 from flask import Blueprint, render_template, request, flash, session, g
-
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from . import mysql
@@ -9,7 +7,6 @@ from datetime import date
 views = Blueprint('views', __name__)
 
 ##### Customer #####
-
 
 @views.route('/')
 def home():
