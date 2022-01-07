@@ -113,9 +113,11 @@ def profile():
 
 @views.route('customer/hospitals', methods=['GET'])
 def hospitals():
+    user_id = session.get('user_id')
     cursor = mysql.connection.cursor()
-    sql = "select hospitals.Name,hospitals.City,hospitals.phone, plans.Type from enrolled , hospitals ,plans where plans.plan_Id = enrolled.plan_Id and enrolled.Hospital_id =hospitals.Hospital_id"
-    cursor.execute(sql)
+    cursor.execute(
+        f'select distinct hospitals.Name,hospitals.City,hospitals.Street,hospitals.Phone from hospitals,`purchasd plans`,customers,enrolled where `purchasd plans`.Customer_Id ={user_id} and customers.Customer_Id = `purchasd plans`.Customer_Id and `purchasd plans`.Plan_Id = enrolled.plan_Id and hospitals.Hospital_id = enrolled.Hospital_id;'
+    )
     hospitals = cursor.fetchall()
     print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
@@ -149,8 +151,13 @@ def plans():
                     user_id, 3)
             )
             mysql.connection.commit()
+<<<<<<< Updated upstream
             flash('You have successfully bought A Golden plan')
 
+=======
+            flash(f'You have successfully bought A Golden plan')
+    
+>>>>>>> Stashed changes
     return render_template("customer/PurchasedPlans.html")
 
 @views.route('/customer/benefitPlan', methods=['GET', 'POST'])
@@ -311,16 +318,23 @@ def AdminHospitals():
     sql = "select * from health_insurance.plans"
     cursor.execute(sql)
     plans = cursor.fetchall()
-     
+
     if request.method == 'POST':
         name = request.form["name"]
         city = request.form["city"]
         street = request.form["street"]
         phone = request.form["phone"]
+<<<<<<< Updated upstream
         plan = request.form.getlist("plantype")
  
 
         print(plan)
+=======
+        plan = request.form["plantype"]
+      
+
+        
+>>>>>>> Stashed changes
         cursor = mysql.connection.cursor()
         
         sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
@@ -398,7 +412,7 @@ def adminClaimsDependent():
 
 
 def AdminClaimsDependentSql():
-    sql = f'''select claims_Id, dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
+    sql = f'''select claims_Id,dependants.Dep_ID,dependants.Name as dependent_Name, claims.Cost,claims.Description,
             claims.Hospital_id,hospitals.Name as Hospital_Name,claims.Status 
             from dependants,claims,hospitals 
             where claims.Dependant_ID = dependants.Dep_ID and hospitals.Hospital_id=claims.Hospital_id '''
@@ -413,7 +427,9 @@ def AdminClaimsDependentSql():
 
     cursor = mysql.connection.cursor()
     cursor.execute(sql)
+
     claims = cursor.fetchall()
+    print(claims)
     return claims
 
 
@@ -436,3 +452,8 @@ def AdminClaimsSql():
     cursor.execute(sql)
     claims = cursor.fetchall()
     return claims
+
+
+
+
+

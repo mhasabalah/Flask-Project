@@ -10,9 +10,10 @@
        <thead>
          <tr>
            <th><span>Name</span></th>
-           <th><span>Plan Supported</span></th>
-           <th><span>Phone</span></th>
+           <th><span>City</span></th>
            <th><span>Address</span></th>
+           <th><span>Phone</span></th>
+           
          </tr>
        </thead>
        <tbody>
@@ -20,9 +21,9 @@
           {% for record in hospitals %}
           <tr>
               <td>{{record[0]}} </td>
-              <td>{{record[3]}} </td>
-              <td>{{record[2]}} </td>
               <td>{{record[1]}} </td>
+              <td>{{record[2]}} </td>
+              <td>{{record[3]}} </td>
           </tr>
           {%endfor%}
 

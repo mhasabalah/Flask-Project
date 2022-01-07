@@ -5,6 +5,18 @@
 
 <h1>Select Your Beneficiary plan </h1>
 <div>
+<<<<<<< Updated upstream
+=======
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <div class="alert alert danger">{{ message }}</div>
+      {% endfor %}
+      </ul>
+    {% endif %}
+    {% endwith %}
+>>>>>>> Stashed changes
   </div>
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
 <form method="post" action="" >

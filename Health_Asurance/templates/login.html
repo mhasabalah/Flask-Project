@@ -188,6 +188,7 @@ input{
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
+<<<<<<< Updated upstream
     
       <form method="post">
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
@@ -219,6 +220,18 @@ input{
         </form>
     
 
+=======
+    <form method="post">
+        <h3>Login Here</h3>
+
+        <label for="username">Username</label>
+        <input required="ID is required" name="userId" type="text" placeholder="Your ID" id="username">
+
+        <button type="submit">Log In</button>
+
+        <a class="btn" href="{{url_for('views.register')}}">SignUp</a>
+      </form>
+>>>>>>> Stashed changes
 
     </section>
 
