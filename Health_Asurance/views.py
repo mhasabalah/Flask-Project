@@ -33,7 +33,6 @@ def register():
 
             except cur.IntegrityError:
                 error = f"User {user['name']} is already registered."
-                print(error)
             else:
                 flash(
                     f'You were successfully registered in and your CODE is {customerID[0]}')
@@ -48,7 +47,6 @@ def register():
 def login():
     if request.method == 'POST':
         userId = request.form['userId']
-        print(userId)
         error = None
         cur = mysql.connection.cursor()
         cur.execute(
@@ -56,7 +54,6 @@ def login():
         )
 
         user = cur.fetchone()
-        print(user)
         if user is None:
             error = 'Incorrect userId.'
 
@@ -92,7 +89,6 @@ def profile():
                 user_id,)
         )
         dependents = cur.fetchall()
-        print(dependents)
 
         cur.execute(
             'select customers.Customer_Name,plans.Type from customers,`purchasd plans`,plans where customers.Customer_Id =%s and `purchasd plans`.Customer_Id = customers.Customer_Id and plans.Plan_Id=`purchasd plans`.Plan_Id;', (
@@ -117,7 +113,6 @@ def hospitals():
         f'select distinct hospitals.Name,hospitals.City,hospitals.Street,hospitals.Phone from hospitals,`purchasd plans`,customers,enrolled where `purchasd plans`.Customer_Id ={user_id} and customers.Customer_Id = `purchasd plans`.Customer_Id and `purchasd plans`.Plan_Id = enrolled.plan_Id and hospitals.Hospital_id = enrolled.Hospital_id;'
     )
     hospitals = cursor.fetchall()
-    print(hospitals)
     return render_template("customer/hospitals.html", hospitals=hospitals)
 
 
@@ -165,8 +160,6 @@ def benefit():
     plans = cur.fetchall()
     if request.method == "POST":
         plan = request.form
-        print(plan['option'])
-
         cur.execute(
             'update customers set customers.Beneficiary_Plan =%s where customers.Customer_Id=%s;',
             (plan['option'], user_id)
@@ -201,7 +194,6 @@ def dependants():
 
         except cur.IntegrityError:
             error = "Database error"
-            print(error)
 
     return render_template("customer/dependants.html", plans=plans)
 
@@ -220,10 +212,8 @@ def claimsDepName():
             user_id,)
     )
     dependants = cur.fetchall()
-    print(dependants)
     if request.method == 'POST':
         dependantID = request.form['dependent']
-        print(dependantID)
 
         return redirect(url_for('views.Depclaims', id=dependantID))
 
@@ -239,21 +229,23 @@ def Depclaims(id):
             id,)
     )
     dependant = cur.fetchall()
-    print(dependant)
 
     cur.execute(
         f'select test.Hospital_id, hospitals.Name from( SELECT dependants.Beneficiary_Plan, `purchasd plans`.Plan_Id, enrolled.Hospital_id from dependants,`purchasd plans`, enrolled where Beneficiary_Plan = `purchasd plans`.PurchasedPlanID and `purchasd plans`.Plan_Id = enrolled.Plan_Id and dependants.Dep_ID = {id}) as test, hospitals where test.Hospital_id = hospitals.Hospital_id;'
     )
     hospitals = cur.fetchall()
-    print(hospitals)
-
     if request.method == 'POST':
-        claim = request.form
-        cur.execute(
-            f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID , Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{id}', '{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
-        )
-        mysql.connection.commit()
-        flash('You have filed claim successfully')
+        try:
+            claim = request.form
+            cur.execute(
+                f"INSERT INTO health_insurance.claims (Customer_id,Dependant_ID , Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{id}', '{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
+            )
+            mysql.connection.commit()
+            flash('You have filed claim successfully')
+
+        except cur.OperationalError:
+                error = "There is no hospitals Support your beneficiary plan"
+                flash(error, category='error')
 
     return render_template("customer/Depclaims.html", dependant=dependant, hospitals=hospitals)
 
@@ -267,14 +259,20 @@ def claims():
     )
     hospitals = cur.fetchall()
     if request.method == 'POST':
-        claim = request.form
-        print(claim)
-        cur = mysql.connection.cursor()
-        cur.execute(
-            f"INSERT INTO health_insurance.claims (Customer_id, Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
-        )
-        mysql.connection.commit()
-        flash('You have filed claim successfully')
+        try:
+            claim = request.form
+            cur = mysql.connection.cursor()
+            cur.execute(
+                f"INSERT INTO health_insurance.claims (Customer_id, Cost ,description , Hospital_id, Status) VALUES ('{user_id}' ,'{claim['ExpectedCost']}', '{claim['Description']}' ,'{claim['hospital']}','{0}');"
+            )
+            mysql.connection.commit()
+            flash('You have filed claim successfully')
+
+        except cur.OperationalError:
+            error = "Please select your benefiaciry Plan First"
+            flash(error, category='error')
+            return redirect(url_for('views.benefit'))
+
     return render_template("customer/claims.html", hospitals=hospitals)
 
 ##### Admin #####
