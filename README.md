@@ -59,7 +59,7 @@ The default port for Flask apps is `5000`, but you may need to update this if yo
 
 You need to be able to connect to a database either on your own computer (locally)) to provide the database for your app.
 
-- run sql code in MySql workbench __Schema with data.sql__  in folder SQL 
+```run sql code in MySql workbench Schema with data.sql in folder SQL ```
 
 **Step 5: Update environment variables and run the Server.**
 
