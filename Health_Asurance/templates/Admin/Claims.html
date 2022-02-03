@@ -4,85 +4,84 @@
 
 {% block head %}
 <style>
-.btnWide{
-  padding: 8px 170px;
-}
+  .btnWide { padding: 8px 170px;}
 </style>
 {% endblock %}
-  <h1 class="text-center">Coustmer Claims</h1>
 
-  <div class="d-flex">
-    <div class="dropdown show mr-auto p-2" style="display: inline-block;">
-      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Coustmer Claims
-      </a>
-    
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
-      </div>
+<h1 class="text-center">Coustmer Claims</h1>
+
+<div class="d-flex">
+  <div class="dropdown show mr-auto p-2" style="display: inline-block;">
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      Coustmer Claims
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="{{url_for('views.adminClaimsDependent')}}">Dependent Claims</a>
     </div>
-  
-    <form method="POST" class="p-2"  style="display: inline-block; ">
-      <div class="btn-group" role="group" aria-label="Basic example">
-
-        <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
-        <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
-        <a class="btn btn-secondary" href="{{url_for('views.adminClaims')}}">All</a>
-      </div>
-    </form>
   </div>
- 
 
-<br><br>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Cost</th>
-        <th scope="col">Description</th>
-        <th scope="col">Hospital</th>
-        <th scope="col">Status</th>
-        <th scope="col">Status Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in claims %}
+  <form method="POST" class="p-2" style="display: inline-block; ">
+    <div class="btn-group" role="group" aria-label="Basic example">
 
-      <tr>
-        <th>{{record[0]}}</th>
-        <td>{{record[1]}}</td>
-        <td>{{record[2]}}</td>
-        <td>{{record[3]}}</td>
-        <td>{{record[4]}}</td>
-        <td>
-          {% if record[5] == 1 %}
-          <p style="color: rgb(19, 136, 72);">resolved</p>
-          {% else %}
-          <p style="color: rgb(224, 77, 77);">unresolved</p>
-          {% endif %}
-        </td>
-        <td>
-          <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
-            style="display: inline-block;">
-            <input type="hidden" name="_method" value="resolved">
-            <input type="submit" value="resolved" class="btn btn-success">
-          </form>
-          <form action="{{url_for('views.update_status', id = record[0])}}" method="POST"
-            style="display: inline-block;">
-            <input type="hidden" name="_method" value="unresolved">
-            <input type="submit" value="unresolved" class="btn btn-danger">
-          </form>
-        </td>
+      <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
+      <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
+      <a class="btn btn-secondary" href="{{url_for('views.adminClaims')}}">All</a>
+    </div>
+  </form>
+</div>
 
-        <td>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Cost</th>
+      <th scope="col">Description</th>
+      <th scope="col">Hospital</th>
+      <th scope="col">Status</th>
+      <th scope="col">Status Action</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in claims %}
+
+    <tr>
+      <th>{{record[0]}}</th>
+      <td>{{record[1]}}</td>
+      <td>{{record[2]}}</td>
+      <td>{{record[3]}}</td>
+      <td>{{record[4]}}</td>
+      <td>
+        {% if record[5] == 1 %}
+        <p style="color: rgb(19, 136, 72);">resolved</p>
+        {% else %}
+        <p style="color: rgb(224, 77, 77);">unresolved</p>
+        {% endif %}
+      </td>
+      <td>
+        <form action="{{url_for('views.update_status', id = record[0])}}" method="POST" style="display: inline-block;">
+          <input type="hidden" name="_method" value="resolved">
+          <input type="submit" value="resolved" class="btn btn-success">
+        </form>
+        <form action="{{url_for('views.update_status', id = record[0])}}" method="POST" style="display: inline-block;">
+          <input type="hidden" name="_method" value="unresolved">
+          <input type="submit" value="unresolved" class="btn btn-danger">
+        </form>
+      </td>
+
+      <td>
         <a href="{{url_for('views.claim_details', id = record[0])}}" class="btn btn-info">info</a>
-        </td>
-      </tr>
+      </td>
+    </tr>
 
 
-      {%endfor%}
+    {%endfor%}
 
-    </tbody>
-  </table>
-  {% endblock %}
+  </tbody>
+</table>
+{% endblock %}

@@ -2,65 +2,65 @@
 {% block title %}Insurance Claims{% endblock %}
 
 {% block content %}
-<h2 style="text-align: center;">{{Claims[1]}} Claim Details </h2><br>
+<h2 style="text-align: center;">{{Claims[1]}} Claim Details </h2>
 <div class="" style="margin: auto;
 width: 50%;
 border: 3px solid;
 padding: 10px;">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Claim Id</h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            {{Claims[0]}}
-          </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Claim Id</h6>
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Customer Name</h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            {{Claims[1]}}
-          </div>
+        <div class="col-sm-9 text-secondary">
+          {{Claims[0]}}
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Claim cost</h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            {{Claims[2]}}
-          </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Customer Name</h6>
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Description</h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            {{Claims[3]}}
-          </div>
+        <div class="col-sm-9 text-secondary">
+          {{Claims[1]}}
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Required Hospital</h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            {{Claims[4]}}
-          </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Claim cost</h6>
         </div>
-        {% if Claims[5] == 1 %}
-        <hr>
-        <div class="row">
-          <div class="col-sm-3">
-            <h6 class="mb-0">Status </h6>
-          </div>
-          <div class="col-sm-9 text-secondary">
-            resolved
+        <div class="col-sm-9 text-secondary">
+          {{Claims[2]}}
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Description</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{Claims[3]}}
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Required Hospital</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{Claims[4]}}
+        </div>
+      </div>
+      {% if Claims[5] == 1 %}
+      <hr>
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Status </h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          resolved
           {% else %}
           <hr>
           <div class="row">
@@ -69,7 +69,7 @@ padding: 10px;">
             </div>
             <div class="col-sm-9 text-secondary">
               unresolved
-          {% endif %}
+              {% endif %}
+            </div>
           </div>
-        </div>
-{% endblock %}
+          {% endblock %}

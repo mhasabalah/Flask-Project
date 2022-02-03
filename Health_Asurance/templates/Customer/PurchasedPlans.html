@@ -1,45 +1,43 @@
-{% extends "CustomerNavBar/index.html" %}
+{% extends "NavBar/customerNavbar.html" %}
 {% block title %}Plans{% endblock %}
 
 {% block content %}
 
 <body>
-<section class="container">
-<div class=" col-lg-10 mx-auto form p-4">
-<form method="post" action="">
-  <div class="row-white ">
-	<div class="block">
-		{% for plan in plans %}
-		<div class=" " style="margin: auto;
-		width: 50%;
-		padding: 10px;">
-			<ul class="pricing p-green{{plan[1]}}">
-				<li>
-					<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
-					<big>{{plan[1]}}</big>
-				</li>
-				<li>Plan ID:{{plan[0]}}</li>
-				<li>Partial Cover</li>
-				<li>Does not Include Surgeries</li>
-				<li>Cover Dependants</li>
-				<li>
-					<h3>{{plan[2]}}</h3>
-					<span>per month</span>
-				</li>
-				<li>
-					<button type="submit" name="plan" value="{{plan[0]}}">Join Now</button>
-				</li>
-			</ul>
-		</div>
-		{%endfor%}
+	<section class="container">
+		<div class=" col-lg-10 mx-auto form p-4">
+			<form method="post" action="">
+				<div class="row-white ">
+					<div class="block">
+						{% for plan in plans %}
+						<div class=" " style="margin: auto; width: 50%; padding: 10px;">
+							<ul class="pricing p-green{{plan[1]}}">
+								<li>
+									<img src="http://bread.pp.ua/n/settings_g.svg" alt="">
+									<big>{{plan[1]}}</big>
+								</li>
+								<li>Plan ID:{{plan[0]}}</li>
+								<li>Partial Cover</li>
+								<li>Does not Include Surgeries</li>
+								<li>Cover Dependants</li>
+								<li>
+									<h3>{{plan[2]}}</h3>
+									<span>per month</span>
+								</li>
+								<li>
+									<button type="submit" name="plan" value="{{plan[0]}}">Join Now</button>
+								</li>
+							</ul>
+						</div>
+						{%endfor%}
 
-	
-	
-	</div><!-- /block -->
-  </div><!-- /row -->
-</form>
-	</div>
-  </section>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+					</div><!-- /block -->
+				</div><!-- /row -->
+			</form>
+		</div>
+	</section>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
-{% endblock %} 
+{% endblock %}

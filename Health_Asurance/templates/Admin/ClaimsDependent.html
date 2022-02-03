@@ -4,24 +4,25 @@
 
 {% block head %}
 <style>
-.btnWide{
-  padding: 8px 170px;
-}
+  .btnWide {
+    padding: 8px 170px;
+  }
 </style>
 {% endblock %}
 
 <h1 class="text-center">Dependent Claims</h1>
 <div class="d-flex">
   <div class="dropdown show mr-auto p-2">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dependent Claims
+    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      Dependent Claims
     </a>
-  
+
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
+      <a class="dropdown-item" href="{{url_for('views.adminClaims')}}">Coustmer Claims</a>
     </div>
   </div>
-  <form  class="p-2" method="POST">
+  <form class="p-2" method="POST">
     <div class="btn-group" role="group" aria-label="Basic example">
       <button type="submit" name="submit_button" value="resolved" class="btn btn-success">resolved</button>
       <button type="submit" name="submit_button" value="unresolved" class="btn btn-info">unresolved</button>
@@ -31,55 +32,54 @@
 </div>
 
 <br>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Dependent Name</th>
-        <th scope="col">Cost</th>
-        <th scope="col">Description</th>
-        <th scope="col">Hospital</th>
-        <th scope="col">Status</th>
-        <th scope="col">Status Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in claims %}
 
-      <tr>
-        <th>{{record[0]}}</th>
-        <td>{{record[2]}}</td>
-        <td>{{record[3]}}</td>
-        <td>{{record[4]}}</td>
-        <td>{{record[6]}}</td>
-        <td>
-          {% if record[7] == 1 %}
-          <p style="color: rgb(19, 136, 72);">resolved</p>
-          {% else %}
-          <p style="color: rgb(224, 77, 77);">unresolved</p>
-          {% endif %}
-        </td>
-        <td>
-          <form action="{{url_for('views.update_status_depndent', id = record[0])}}" method="POST"
-            style="display: inline-block;">
-            <input type="hidden" name="_methoddp" value="resolved">
-            <input type="submit" value="resolved" class="btn btn-success">
-          </form>
-          <form action="{{url_for('views.update_status_depndent', id = record[0])}}" method="POST"
-            style="display: inline-block;">
-            <input type="hidden" name="_methoddp" value="unresolved">
-            <input type="submit" value="unresolved" class="btn btn-danger">
-          </form>
-        </td>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Dependent Name</th>
+      <th scope="col">Cost</th>
+      <th scope="col">Description</th>
+      <th scope="col">Hospital</th>
+      <th scope="col">Status</th>
+      <th scope="col">Status Action</th>
+      <th scope="col">Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in claims %}
 
-        <td>
+    <tr>
+      <th>{{record[0]}}</th>
+      <td>{{record[2]}}</td>
+      <td>{{record[3]}}</td>
+      <td>{{record[4]}}</td>
+      <td>{{record[6]}}</td>
+      <td>
+        {% if record[7] == 1 %}
+        <p style="color: rgb(19, 136, 72);">resolved</p>
+        {% else %}
+        <p style="color: rgb(224, 77, 77);">unresolved</p>
+        {% endif %}
+      </td>
+      <td>
+        <form action="{{url_for('views.update_status_depndent', id = record[0])}}" method="POST"
+          style="display: inline-block;">
+          <input type="hidden" name="_methoddp" value="resolved">
+          <input type="submit" value="resolved" class="btn btn-success">
+        </form>
+        <form action="{{url_for('views.update_status_depndent', id = record[0])}}" method="POST"
+          style="display: inline-block;">
+          <input type="hidden" name="_methoddp" value="unresolved">
+          <input type="submit" value="unresolved" class="btn btn-danger">
+        </form>
+      </td>
+
+      <td>
         <a href="{{url_for('views.claim_details_dependent', id = record[0])}}" class="btn btn-info">info</a>
-        </td>
-      </tr>
-
-
-      {%endfor%}
-
-    </tbody>
-  </table>
-  {% endblock %}
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+{% endblock %}

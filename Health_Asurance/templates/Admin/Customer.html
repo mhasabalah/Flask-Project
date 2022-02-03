@@ -2,36 +2,37 @@
 {% block title %}Coustmers{% endblock %}
 
 {% block content %}
-<h1>Coustmers</h1>
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Date</th>
-        <th scope="col">City</th>
-        <th scope="col">Street</th>
-        <th scope="col">Building Number</th>
-        <th scope="col">Phone Number</th>
-        <th scope="col">Beneficiary Plan</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in customers %}
 
-      <tr>
-        <th scope="row">{{record[0]}}</th>
-        <td>{{record[1]}}</td>
-        <td>{{record[2]}}</td>
-        <td>{{record[3]}}</td>
-        <td>{{record[4]}}</td>
-        <td>{{record[5]}}</td>
-        <td>{{record[6]}}</td>
-        <td>{{record[8]}}</td>
-      </tr>
+<h1 class="text-center">Coustmers</h1>
 
-      {%endfor%}
 
-    </tbody>
-  </table>
+<div class="d-flex justify-content-center panel panel-default">
+  <div class="panel-body table-responsive">
+    <table class="table table-striped ">
+      <thead>
+        <tr>
+          <th style="width: 50px;" scope="col">Id</th>
+          <th style="width: 30px;" scope="col">Name</th>
+          <th style="width: 130px;" scope="col">Date</th>
+          <th style="width: 150px;" scope="col">Address</th>
+          <th style="width: 50px;" scope="col">Phone Number</th>
+          <th style="width: 150px;" scope="col">Beneficiary Plan</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in customers %}
+        <tr>
+          <th scope="row">{{record[0]}}</th>
+          <td>{{record[1]}}</td>
+          <td>{{record[2]}}</td>
+          <td> {{record[5]}} {{record[4]}} ,{{record[3]}}</td>
+          <td>{{record[6]}}</td>
+          <td>{{record[8]}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 {% endblock %}

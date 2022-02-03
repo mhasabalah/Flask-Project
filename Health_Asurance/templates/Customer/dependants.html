@@ -1,51 +1,51 @@
-{% extends "CustomerNavBar/index.html" %}
+{% extends "NavBar/customerNavbar.html" %}
 {% block title %}Dependants{% endblock %}
 
 {% block content %}
 
 <h1>Add Dependants</h1>
 <div>
-  </div>
+</div>
 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
-<form method="post" action="" >
-    <div class="form-row">
-        <div class="form-group">
-        <label for="inputEmail4">Name</label>
-        <input type="text" class="form-control" name="Name" required="Name id required">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-        <label for="inputZip">Date Of Birth</label>
-        <input type="Date" class="form-control" name="BirthDate" required="Date Of Birth is required">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group ">
-            <label for="RelationShip">RelationShip</label>
-            <input type="text" class="form-control" name="relationShip" required="RelationShip is required">
-        </div>
+    <form method="post" action="">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="inputEmail4">Name</label>
+                <input type="text" class="form-control" name="Name" required="Name id required">
+            </div>
         </div>
 
-    <div class="form-row">
-    <div class="form-group ">
-        <label for="RelationShip">Benefit plan</label>
-        <select name="option" class="form-select" aria-label="select Benefit Plan">
-            <option selected>select Benefit Plan</option>
-            {% for plan in plans %}
-            <option name ="{{plan[0]}}" value="{{plan[0]}}">{{plan[0]}} with type {{plan[1]}}</option>
-            {%endfor%}
-        </select>
-    </div>
-    </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="inputZip">Date Of Birth</label>
+                <input type="Date" class="form-control" name="BirthDate" required="Date Of Birth is required">
+            </div>
+        </div>
 
-    <div class="control">
-        <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Add</button>
-    </div>
-    
-</form>
+        <div class="form-row">
+            <div class="form-group ">
+                <label for="RelationShip">RelationShip</label>
+                <input type="text" class="form-control" name="relationShip" required="RelationShip is required">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group ">
+                <label for="RelationShip">Benefit plan</label>
+                <select name="option" class="form-select" aria-label="select Benefit Plan">
+                    <option selected>select Benefit Plan</option>
+                    {% for plan in plans %}
+                    <option name="{{plan[0]}}" value="{{plan[0]}}">{{plan[0]}} with type {{plan[1]}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+        </div>
+
+        <div class="control">
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Add</button>
+        </div>
+
+    </form>
 
 </div>
-{% endblock %} 
+{% endblock %}

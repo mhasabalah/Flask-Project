@@ -1,4 +1,3 @@
-from os import name
 from flask import Blueprint, render_template, request, flash, session, g
 from flask.helpers import url_for
 from werkzeug.utils import redirect
@@ -7,6 +6,8 @@ from datetime import date
 views = Blueprint('views', __name__)
 
 ##### Customer #####
+
+
 @views.route('/')
 def home():
     return render_template("Main/index.html")
@@ -127,8 +128,7 @@ def plans():
 
     if request.method == 'POST':
         plan = request.form
-        print(plan)
-        planID = int (plan['plan'])
+        planID = int(plan['plan'])
         cur.execute(
             'insert into `purchasd plans` (Customer_Id, Plan_Id) values (%s, %s);', (
                 user_id, planID)
@@ -136,11 +136,11 @@ def plans():
         mysql.connection.commit()
         cur.execute(
             'select Type from plans where Plan_Id = %s', (
-                 planID,)
+                planID,)
         )
         type = cur.fetchone()
         flash(f"You have successfully bought A {type[0]} plan")
-        
+
     return render_template("customer/PurchasedPlans.html", plans=plans)
 
 
@@ -239,8 +239,8 @@ def Depclaims(id):
             flash('You have filed claim successfully')
 
         except cur.OperationalError:
-                error = "There is no hospitals Support your beneficiary plan"
-                flash(error, category='error')
+            error = "There is no hospitals Support your beneficiary plan"
+            flash(error, category='error')
 
     return render_template("customer/Depclaims.html", dependant=dependant, hospitals=hospitals)
 
@@ -326,7 +326,7 @@ def AdminHospitals():
 
             cursor = mysql.connection.cursor()
             sql = f"INSERT INTO health_insurance.hospitals (Name, City, Street, Phone ) VALUES ('{name}','{city}','{street}','{phone}');"
-            
+
             cursor.execute(sql)
             mysql.connection.commit()
 

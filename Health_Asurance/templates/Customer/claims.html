@@ -1,239 +1,293 @@
-{% extends "CustomerNavBar/index.html" %}
+{% extends "NavBar/customerNavbar.html" %}
 
 {% block title %}Claim{% endblock %}
 {% block head %}
 <style>
-  body, div, form, input, select, textarea, label, p { 
+  body,
+  div,
+  form,
+  input,
+  select,
+  textarea,
+  label,
+  p {
 
-  outline: none;
-  font-size: 14px;
-  color: #666;
-  line-height: 22px;
+    outline: none;
+    font-size: 14px;
+    color: #666;
+    line-height: 22px;
   }
+
   h1 {
-  position: absolute;
-  margin: 0;
-  font-size: 38px;
-  color: #fff;
-  z-index: 2;
-  line-height: 83px;
+    position: absolute;
+    margin: 0;
+    font-size: 38px;
+    color: #fff;
+    z-index: 2;
+    line-height: 83px;
   }
+
   textarea {
-  width: calc(100% - 12px);
-  padding: 5px;
+    width: calc(100% - 12px);
+    padding: 5px;
   }
+
   .testbox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: inherit;
-  padding: 20px;
-  padding-top: 608px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    padding: 20px;
+    padding-top: 608px;
   }
-  
+
   form {
-  width: 50%;
-  padding: 20px;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 0 8px  #669999; 
+    width: 50%;
+    padding: 20px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 0 8px #669999;
   }
+
   .banner {
-  position: relative;
-  height: 300px;
-  background-image: url("https://iiflinsurance.com/images/step-to-claim-from-multiple-health-insurance-companies.jpg");  
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    position: relative;
+    height: 300px;
+    background-image: url("https://iiflinsurance.com/images/step-to-claim-from-multiple-health-insurance-companies.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
-  input, select, textarea {
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  }
-  input {
-  width: calc(100% - 10px);
-  padding: 5px;
-  }
-  input[type="date"] {
-  padding: 4px 5px;
-  }
+
+  input,
+  select,
   textarea {
-  width: calc(100% - 12px);
-  padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
   }
-  .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder {
-  color:  #669999;
+
+  input {
+    width: calc(100% - 10px);
+    padding: 5px;
   }
-  .item input:hover, .item select:hover, .item textarea:hover {
-  border: 1px solid transparent;
-  box-shadow: 0 0 3px 0  #669999;
-  color: #669999;
+
+  input[type="date"] {
+    padding: 4px 5px;
   }
+
+  textarea {
+    width: calc(100% - 12px);
+    padding: 5px;
+  }
+
+  .item:hover p,
+  .item:hover i,
+  .question:hover p,
+  .question label:hover,
+  input:hover::placeholder {
+    color: #669999;
+  }
+
+  .item input:hover,
+  .item select:hover,
+  .item textarea:hover {
+    border: 1px solid transparent;
+    box-shadow: 0 0 3px 0 #669999;
+    color: #669999;
+  }
+
   .item {
-  position: relative;
-  margin: 10px 0;
+    position: relative;
+    margin: 10px 0;
   }
+
   .item span {
-  color: red;
+    color: red;
   }
+
   input[type="date"]::-webkit-inner-spin-button {
-  display: none;
+    display: none;
   }
-  .item i, input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  font-size: 20px;
-  color:  #a3c2c2;
+
+  .item i,
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    font-size: 20px;
+    color: #a3c2c2;
   }
+
   .item i {
-  right: 1%;
-  top: 30px;
-  z-index: 1;
+    right: 1%;
+    top: 30px;
+    z-index: 1;
   }
+
   [type="date"]::-webkit-calendar-picker-indicator {
-  right: 1%;
-  z-index: 2;
-  opacity: 0;
-  cursor: pointer;
+    right: 1%;
+    z-index: 2;
+    opacity: 0;
+    cursor: pointer;
   }
-  input[type=radio], input[type=checkbox]  {
-  display: none;
+
+  input[type=radio],
+  input[type=checkbox] {
+    display: none;
   }
+
   label.radio {
-  position: relative;
-  display: inline-block;
-  margin: 5px 20px 15px 0;
-  cursor: pointer;
+    position: relative;
+    display: inline-block;
+    margin: 5px 20px 15px 0;
+    cursor: pointer;
   }
+
   .question span {
-  margin-left: 30px;
+    margin-left: 30px;
   }
+
   .question-answer label {
-  display: block;
+    display: block;
   }
+
   label.radio:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
   }
-  input[type=radio]:checked + label:before, label.radio:hover:before {
-  border: 2px solid  #669999;
+
+  input[type=radio]:checked+label:before,
+  label.radio:hover:before {
+    border: 2px solid #669999;
   }
+
   label.radio:after {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 5px;
-  width: 8px;
-  height: 4px;
-  border: 3px solid  #669999;
-  border-top: none;
-  border-right: none;
-  transform: rotate(-45deg);
-  opacity: 0;
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 5px;
+    width: 8px;
+    height: 4px;
+    border: 3px solid #669999;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+    opacity: 0;
   }
-  input[type=radio]:checked + label:after {
-  opacity: 1;
+
+  input[type=radio]:checked+label:after {
+    opacity: 1;
   }
+
   .flax {
-  display:flex;
-  justify-content:space-around;
+    display: flex;
+    justify-content: space-around;
   }
+
   .btn-block {
-  margin-top: 10px;
-  text-align: center;
+    margin-top: 10px;
+    text-align: center;
   }
+
   .testbox button {
-  width: 150px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px; 
-  background:  #669999;
-  font-size: 16px;
-  color: #fff;
-  cursor: pointer;
+    width: 150px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #669999;
+    font-size: 16px;
+    color: #fff;
+    cursor: pointer;
   }
+
   .testbox button:hover {
-  background:  #a3c2c2;
+    background: #a3c2c2;
   }
+
   @media (min-width: 568px) {
-  .name-item, .city-item {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  }
-  .name-item input, .name-item div {
-  width: calc(50% - 20px);
-  }
-  .name-item div input {
-  width:97%;}
-  .name-item div label {
-  display:block;
-  padding-bottom:5px;
-  }
+
+    .name-item,
+    .city-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .name-item input,
+    .name-item div {
+      width: calc(50% - 20px);
+    }
+
+    .name-item div input {
+      width: 97%;
+    }
+
+    .name-item div label {
+      display: block;
+      padding-bottom: 5px;
+    }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-          <div class="testbox">
-            <form action="#" method="post">
-              <div class="banner">
-               </div>
-              <br/>
-              <fieldset>
-                <legend>Customer Information</legend>
-                <div class="item">
-                  <label for="fname"> Full Name<span>*</span></label>
-                  <input id="fname" type="text" name="CustomerName" required/>
-                </div>
-                <div class="item">
-                  <label for="initial">Expected Cost<span>*</span></label>
-                  <input id="initial" type="number" name="ExpectedCost" required/>
-                </div>
+<div class="testbox">
+  <form action="#" method="post">
+    <div class="banner">
+    </div>
+    <br />
+    <fieldset>
+      <legend>Customer Information</legend>
+      <div class="item">
+        <label for="fname"> Full Name<span>*</span></label>
+        <input id="fname" type="text" name="CustomerName" required />
+      </div>
+      <div class="item">
+        <label for="initial">Expected Cost<span>*</span></label>
+        <input id="initial" type="number" name="ExpectedCost" required />
+      </div>
 
-                <div class="item">
-                  <label for="lname">Required Hospital<span>*</span></label>
-                  <select name="hospital" class="form-select" aria-label="select Benefit Plan">
-                    <option selected>select Hospital </option>
-                    {% for hospital in hospitals %}
-                    <option name ="{{hospital[0]}}" value="{{hospital[0]}}">{{hospital[1]}}</option>
-                    {%endfor%}
-                  </select>
-                </div>
+      <div class="item">
+        <label for="lname">Required Hospital<span>*</span></label>
+        <select name="hospital" class="form-select" aria-label="select Benefit Plan">
+          <option selected>select Hospital </option>
+          {% for hospital in hospitals %}
+          <option name="{{hospital[0]}}" value="{{hospital[0]}}">{{hospital[1]}}</option>
+          {%endfor%}
+        </select>
+      </div>
 
-                <div class="item">
-                  <label for="phone">Phone<span>*</span></label>
-                  <input id="phone" type="text"   name="phone" required/>
-                </div>  
-                <div class="item">
-                  <label for="phone">Describe the case<span>*</span></label>
-                  <input id="phone" type="text" name="Description" required/>
-                </div>   
+      <div class="item">
+        <label for="phone">Phone<span>*</span></label>
+        <input id="phone" type="text" name="phone" required />
+      </div>
+      <div class="item">
+        <label for="phone">Describe the case<span>*</span></label>
+        <input id="phone" type="text" name="Description" required />
+      </div>
 
-              </fieldset>
-              <br/>
-              <fieldset>
-                <legend>Policy Information</legend>
-                <div class="item">
-                  <label for="date">Plan starting date<span>*</span></label>
-                  <input id="date" type="date" name="date" />
-                  <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="item">
-                  <label for="instructions"> free area to tell as any additional notes  </label>
-                  <textarea id="instructions" rows="3"></textarea>
-                </div>
-              </fieldset>
-              <div class="btn-block">
-                <button type="submit" href="/">Submit</button>
-              </div>
-            </form>
-          </div>
-    {% endblock %} 
+    </fieldset>
+    <br />
+    <fieldset>
+      <legend>Policy Information</legend>
+      <div class="item">
+        <label for="date">Plan starting date<span>*</span></label>
+        <input id="date" type="date" name="date" />
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="item">
+        <label for="instructions"> free area to tell as any additional notes </label>
+        <textarea id="instructions" rows="3"></textarea>
+      </div>
+    </fieldset>
+    <div class="btn-block">
+      <button type="submit" href="/">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
