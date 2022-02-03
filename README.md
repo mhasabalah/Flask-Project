@@ -10,13 +10,6 @@ This is a Health Asurance  project bulit with flask framework .
 - [Installation Guide](#installation-guide) - How to get started with a new Flask app
 
 
-### Built With
-
-* [Flask](https://flask.palletsprojects.com/en/2.0.x/)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-
-
 # <a name='installation-guide'>Installation Guide</a>
 
 This project requires the following tools:
