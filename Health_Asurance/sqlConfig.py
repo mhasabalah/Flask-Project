@@ -1,4 +1,4 @@
 HOST = 'localhost'
 DATABASE = 'health_insurance'
-USER = 'root'
+USER = ''
 PASSWORD = ''
